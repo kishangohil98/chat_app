@@ -9,7 +9,7 @@ export class UserRepository implements IUserRepository {
     // await this.userDatastore.addUser(email);
   }
 
-  public async getUser(): Promise<void> { 
+  public async getUser(): Promise<void> {
       // making non-empty block
   }
 }
