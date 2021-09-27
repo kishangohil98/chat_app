@@ -1,7 +1,7 @@
 import * as express from 'express'
 import { IUserRepository } from '../repositories/interface/IUserRepository'
 import { injectable, inject } from 'inversify'
-import { SERVICE_TYPES } from '../repositories/ServiceTypes'
+import { INVERSIFY_TYPES } from '../inversify/inversify'
 import { IRouterController } from './IRouterController'
 
 @injectable()
@@ -10,7 +10,7 @@ export class UserController implements IRouterController {
   private path: string = '/user'
 
   constructor(
-    @inject(SERVICE_TYPES.UserRepository)
+    @inject(INVERSIFY_TYPES.UserRepository)
     private userRepository: IUserRepository
   ) {
     this.router = express.Router()

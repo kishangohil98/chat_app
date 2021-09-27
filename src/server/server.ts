@@ -1,6 +1,6 @@
 import * as express from 'express'
 import { inject, injectable, multiInject } from 'inversify'
-import { SERVER_TYPES } from './ServerTypes'
+import { INVERSIFY_TYPES } from '../inversify/inversify'
 import { IRouterController } from './../controllers/IRouterController'
 
 @injectable()
@@ -8,7 +8,7 @@ export class Server {
   public readonly app: express.Application
 
   constructor(
-    @multiInject(SERVER_TYPES.Controller) controllers: IRouterController[]
+    @multiInject(INVERSIFY_TYPES.Controller) controllers: IRouterController[]
   ) {
     this.app = express()
     this.initializeMiddleware()

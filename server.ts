@@ -2,7 +2,7 @@ import { Container } from 'inversify';
 import 'reflect-metadata';
 import { initialiseServer } from './src/server/inversify';
 import { Server } from './src/server/Server';
-import { SERVER_TYPES } from './src/server/ServerTypes';
+import { INVERSIFY_TYPES } from './src/inversify/inversify';
 import { initialiseRepositories } from './src/repositories/inversify';
 
 
@@ -15,7 +15,7 @@ export class ServerInit {
     this.inversifyContainer = this.initInversifyContainer();
 
     // Create the express server
-    this.appServer = this.inversifyContainer.get<Server>(SERVER_TYPES.Server);
+    this.appServer = this.inversifyContainer.get<Server>(INVERSIFY_TYPES.Server);
   }
 
   /**
