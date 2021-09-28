@@ -9,7 +9,6 @@ export class UserRepository implements IUserRepository {
     private userDatastore: IUserDatastore
   ) {}
   public async registerUser(email: string): Promise<void> {
-    console.log('In repositopry', email)
     await this.userDatastore.addUser(email)
   }
 
