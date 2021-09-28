@@ -1,6 +1,6 @@
 import * as express from 'express'
 import { inject, injectable, multiInject } from 'inversify'
-import { INVERSIFY_TYPES } from '../inversify/inversify'
+import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
 import { IRouterController } from './../controllers/IRouterController'
 
 @injectable()

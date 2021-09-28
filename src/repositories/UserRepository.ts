@@ -1,12 +1,16 @@
 import { IUserRepository } from './interface/IUserRepository'
 import { inject, injectable } from 'inversify'
-// import { UserDatastore } from '../database/UserDatastore';
-// import { IUserDatastore } from '../database/interface/IUserDatastore';
+import { IUserDatastore } from '../database/interface/IUserDatastore'
+import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
 @injectable()
 export class UserRepository implements IUserRepository {
+  constructor(
+    @inject(INVERSIFY_TYPES.UserDatastore)
+    private userDatastore: IUserDatastore
+  ) {}
   public async registerUser(email: string): Promise<void> {
     console.log('In repositopry', email)
-    // await this.userDatastore.addUser(email);
+    await this.userDatastore.addUser(email);
   }
 
   public async getUser(): Promise<void> {

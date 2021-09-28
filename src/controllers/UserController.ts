@@ -1,8 +1,9 @@
 import * as express from 'express'
 import { IUserRepository } from '../repositories/interface/IUserRepository'
 import { injectable, inject } from 'inversify'
-import { INVERSIFY_TYPES } from '../inversify/inversify'
+import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
 import { IRouterController } from './IRouterController'
+import { EMAIL_ALREADY_REGISTERED } from '../common/errorMessages'
 
 @injectable()
 export class UserController implements IRouterController {
@@ -43,6 +44,14 @@ export class UserController implements IRouterController {
       await this.userRepository.registerUser('kishan@yopmail.com')
       response.json({ res: 'Register user' })
     } catch (error) {
+      if (error.code === 11000){
+        /**
+         * Mongoose duplicate entry error code - email
+         */
+        response.status(400).json({
+          message: EMAIL_ALREADY_REGISTERED
+        })
+      }
       next(error)
     }
   }

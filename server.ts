@@ -1,18 +1,20 @@
 import { Container } from 'inversify';
 import 'reflect-metadata';
-import { initialiseServer } from './src/server/inversify';
 import { Server } from './src/server/Server';
-import { INVERSIFY_TYPES } from './src/inversify/inversify';
-import { initialiseRepositories } from './src/repositories/inversify';
-
+import { INVERSIFY_TYPES } from './src/inversify/inversifyTypes';
+import { initialiseRepositories, initialiseServer, initialiseDatastore } from './src/inversify/inversify';
+import { DatabaseConnection } from './src/database/databaseConnection';
 
 export class ServerInit {
   public readonly appServer: Server;
   private inversifyContainer: Container;
+  public databaseConnection: DatabaseConnection;
 
   constructor() {
 
     this.inversifyContainer = this.initInversifyContainer();
+    this.databaseConnection = new DatabaseConnection();
+    this.databaseConnection.connect();
 
     // Create the express server
     this.appServer = this.inversifyContainer.get<Server>(INVERSIFY_TYPES.Server);
@@ -25,7 +27,7 @@ export class ServerInit {
     const container = new Container();
     // initialiseLogger(container);
     initialiseRepositories(container);
-    // initialiseDatastore(container);
+    initialiseDatastore(container);
     initialiseServer(container);
     return container;
   }
