@@ -16,7 +16,6 @@ import { ILogger } from '../common/logger/ILogger'
 import { WinstonLogger } from '../common/logger/winstonLogger'
 import { LoggerMiddleware } from '../middlerware/LoggerMiddleware'
 
-
 /**
  * Initialise Inversify with Interface instances. This will initialise all the services.
  * @param {Container} container
@@ -38,7 +37,6 @@ export function initialiseDatastore(container: Container): Container {
   return container
 }
 
-
 export function initialiseServer(inversifyContainer: Container): Container {
   // User Controller
   inversifyContainer
@@ -52,7 +50,7 @@ export function initialiseServer(inversifyContainer: Container): Container {
   // Logger middleware
   inversifyContainer
     .bind<LoggerMiddleware>(INVERSIFY_TYPES.LoggerMiddleware)
-    .to(LoggerMiddleware);
+    .to(LoggerMiddleware)
 
   return inversifyContainer
 }
@@ -61,6 +59,6 @@ export function initialiseLogger(inversifyContainer: Container): Container {
   inversifyContainer
     .bind<ILogger>(INVERSIFY_TYPES.Logger)
     .to(WinstonLogger)
-    .inSingletonScope();
-  return inversifyContainer;
+    .inSingletonScope()
+  return inversifyContainer
 }

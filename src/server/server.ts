@@ -12,8 +12,8 @@ export class Server {
   constructor(
     @multiInject(INVERSIFY_TYPES.Controller) controllers: IRouterController[],
     @inject(INVERSIFY_TYPES.Logger) private logger: ILogger,
-    @inject(INVERSIFY_TYPES.LoggerMiddleware) private loggerMiddlreware: LoggerMiddleware,
-
+    @inject(INVERSIFY_TYPES.LoggerMiddleware)
+    private loggerMiddlreware: LoggerMiddleware
   ) {
     this.app = express()
     this.initializeMiddleware()
@@ -22,7 +22,7 @@ export class Server {
 
   public listen() {
     this.app.listen(process.env.PORT, () => {
-      this.logger.info(`App listening on the port ${process.env.PORT}`);
+      this.logger.info(`App listening on the port ${process.env.PORT}`)
     })
   }
 

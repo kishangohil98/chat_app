@@ -44,12 +44,12 @@ export class UserController implements IRouterController {
       await this.userRepository.registerUser(request.body.email)
       response.json({})
     } catch (error) {
-      if (error.code === 11000){
+      if (error.code === 11000) {
         /**
          * Mongoose duplicate entry error code - email
          */
         response.status(400).json({
-          message: EMAIL_ALREADY_REGISTERED
+          message: EMAIL_ALREADY_REGISTERED,
         })
       }
       next(error)

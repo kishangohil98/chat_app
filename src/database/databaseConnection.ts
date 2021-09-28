@@ -11,17 +11,17 @@ export class DatabaseConnection implements IDatabaseConnection {
         useUnifiedTopology: true,
         useFindAndModify: false,
         useCreateIndex: true,
-      });
-      const connection = Mongoose.connection;
+      })
+      const connection = Mongoose.connection
 
       connection.on('open', () => {
-        console.log('Database connected....');
-      });
-      connection.on('error', (error) => {
-        console.error(error);
-      });
+        console.log('Database connected....')
+      })
+      connection.on('error', error => {
+        console.error(error)
+      })
     } catch (error) {
-      console.error(error);
+      console.error(error)
       // throw new ForbiddenException('Database connection failed');
     }
   }

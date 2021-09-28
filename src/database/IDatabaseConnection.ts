@@ -1,3 +1,3 @@
 export interface IDatabaseConnection {
-    connect(): void;
-  }
+  connect(): void
+}
