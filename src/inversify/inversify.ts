@@ -12,6 +12,9 @@ import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
 import { IRouterController } from '../controllers/IRouterController'
 import { UserController } from '../controllers/UserController'
 import { Server } from '../server/server'
+import { ILogger } from '../common/logger/ILogger'
+import { WinstonLogger } from '../common/logger/winstonLogger'
+import { LoggerMiddleware } from '../middlerware/LoggerMiddleware'
 
 
 /**
@@ -46,6 +49,18 @@ export function initialiseServer(inversifyContainer: Container): Container {
     .bind<Server>(INVERSIFY_TYPES.Server)
     .to(Server)
     .inSingletonScope()
+  // Logger middleware
+  inversifyContainer
+    .bind<LoggerMiddleware>(INVERSIFY_TYPES.LoggerMiddleware)
+    .to(LoggerMiddleware);
 
   return inversifyContainer
+}
+
+export function initialiseLogger(inversifyContainer: Container): Container {
+  inversifyContainer
+    .bind<ILogger>(INVERSIFY_TYPES.Logger)
+    .to(WinstonLogger)
+    .inSingletonScope();
+  return inversifyContainer;
 }

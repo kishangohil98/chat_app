@@ -2,7 +2,7 @@ import { Container } from 'inversify';
 import 'reflect-metadata';
 import { Server } from './src/server/Server';
 import { INVERSIFY_TYPES } from './src/inversify/inversifyTypes';
-import { initialiseRepositories, initialiseServer, initialiseDatastore } from './src/inversify/inversify';
+import { initialiseRepositories, initialiseServer, initialiseDatastore, initialiseLogger } from './src/inversify/inversify';
 import { DatabaseConnection } from './src/database/databaseConnection';
 
 export class ServerInit {
@@ -25,7 +25,7 @@ export class ServerInit {
    */
   private initInversifyContainer(): Container {
     const container = new Container();
-    // initialiseLogger(container);
+    initialiseLogger(container);
     initialiseRepositories(container);
     initialiseDatastore(container);
     initialiseServer(container);

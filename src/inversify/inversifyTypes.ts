@@ -8,4 +8,7 @@ export const INVERSIFY_TYPES = {
   // Datastore types
   Database: Symbol.for('Database'),
   UserDatastore: Symbol.for('UserDatastore'),
+  // Logger
+  Logger: Symbol.for('Logger'),
+  LoggerMiddleware: Symbol.for('LoggerMiddleware'),
 }

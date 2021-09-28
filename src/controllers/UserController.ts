@@ -28,7 +28,7 @@ export class UserController implements IRouterController {
   ) => {
     try {
       await this.userRepository.getUser()
-      response.json({ res: 'res from KG' })
+      response.json({})
     } catch (error) {
       console.error(error)
       next(error)
@@ -41,8 +41,8 @@ export class UserController implements IRouterController {
     next: express.NextFunction
   ) => {
     try {
-      await this.userRepository.registerUser('kishan@yopmail.com')
-      response.json({ res: 'Register user' })
+      await this.userRepository.registerUser(request.body.email)
+      response.json({})
     } catch (error) {
       if (error.code === 11000){
         /**
