@@ -1,26 +1,33 @@
-import * as mongoose from 'mongoose'
-export interface IUser extends mongoose.Document {
+import * as Mongoose from 'mongoose'
+export interface IUser extends Mongoose.Document {
   _id: string
   email: string
+  avatar?: string
   createdAt: Date
   updatedAt: Date
 }
 
-const userSchema: mongoose.Schema = new mongoose.Schema({
+const userSchema: Mongoose.Schema = new Mongoose.Schema({
   email: {
-    type: mongoose.Schema.Types.String,
+    type: Mongoose.Schema.Types.String,
     unique: true,
     required: true,
     trim: true,
   },
+  avatar: {
+    type: Mongoose.Schema.Types.String,
+    required: false,
+  },
   createdAt: {
-    type: mongoose.Schema.Types.Date,
+    type: Mongoose.Schema.Types.Date,
+    default: Date.now,
     required: true,
   },
   updatedAt: {
-    type: mongoose.Schema.Types.Date,
-    required: false,
+    type: Mongoose.Schema.Types.Date,
+    default: Date.now,
+    required: true,
   },
 })
 
-export const User = mongoose.model<IUser>('User', userSchema, 'user')
+export const User = Mongoose.model<IUser>('User', userSchema, 'user')

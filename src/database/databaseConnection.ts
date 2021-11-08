@@ -1,8 +1,10 @@
 import * as Mongoose from 'mongoose'
 import { IDatabaseConnection } from './IDatabaseConnection'
+import { WinstonLogger } from '../common/logger/WinstonLogger'
 
 export class DatabaseConnection implements IDatabaseConnection {
   public connect(): void {
+    const logger = new WinstonLogger();
     try {
       const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@chatappcluster.wbbx5.mongodb.net/ChatAppCluster?retryWrites=true&w=majority`
 
@@ -15,14 +17,13 @@ export class DatabaseConnection implements IDatabaseConnection {
       const connection = Mongoose.connection
 
       connection.on('open', () => {
-        console.log('Database connected....')
+        logger.info(`Database connected successfully`);
       })
       connection.on('error', error => {
-        console.error(error)
+        logger.error('Error connecting database:', error);
       })
     } catch (error) {
-      console.error(error)
-      // throw new ForbiddenException('Database connection failed');
+      console.error(error);
     }
   }
 }
