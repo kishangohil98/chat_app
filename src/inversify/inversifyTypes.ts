@@ -11,4 +11,7 @@ export const INVERSIFY_TYPES = {
   // Logger
   Logger: Symbol.for('Logger'),
   LoggerMiddleware: Symbol.for('LoggerMiddleware'),
+  UserRegistrationValidationMiddleware: Symbol.for(
+    'UserRegistrationValidationMiddleware'
+  ),
 }

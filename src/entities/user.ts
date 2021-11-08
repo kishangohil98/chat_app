@@ -2,6 +2,7 @@ import * as Mongoose from 'mongoose'
 export interface IUser extends Mongoose.Document {
   _id: string
   email: string
+  password: string
   avatar?: string
   createdAt: Date
   updatedAt: Date
@@ -12,6 +13,11 @@ const userSchema: Mongoose.Schema = new Mongoose.Schema(
     email: {
       type: Mongoose.Schema.Types.String,
       unique: true,
+      required: true,
+      trim: true,
+    },
+    password: {
+      type: Mongoose.Schema.Types.String,
       required: true,
       trim: true,
     },

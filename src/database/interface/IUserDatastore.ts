@@ -1,3 +1,4 @@
+import { IUserRegistrationSchema } from '../../controllers/UserController/UserRegistrationValidationMiddleware'
 export interface IUserDatastore {
-  addUser(email: string): Promise<void>
+  addUser(body: IUserRegistrationSchema): Promise<void>
 }

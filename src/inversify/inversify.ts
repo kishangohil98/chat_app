@@ -10,11 +10,12 @@ import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
 
 // Controllers
 import { IRouterController } from '../controllers/IRouterController'
-import { UserController } from '../controllers/UserController'
+import { UserController } from '../controllers/UserController/UserController'
 import { Server } from '../server/server'
 import { ILogger } from '../common/logger/ILogger'
 import { WinstonLogger } from '../common/logger/winstonLogger'
 import { LoggerMiddleware } from '../middlerware/LoggerMiddleware'
+import { UserRegistrationValidationMiddleware } from '../controllers/UserController/UserRegistrationValidationMiddleware'
 
 /**
  * Initialise Inversify with Interface instances. This will initialise all the services.
@@ -51,6 +52,13 @@ export function initialiseServer(inversifyContainer: Container): Container {
   inversifyContainer
     .bind<LoggerMiddleware>(INVERSIFY_TYPES.LoggerMiddleware)
     .to(LoggerMiddleware)
+
+  // Validation Middleware
+  inversifyContainer
+    .bind<UserRegistrationValidationMiddleware>(
+      INVERSIFY_TYPES.UserRegistrationValidationMiddleware
+    )
+    .to(UserRegistrationValidationMiddleware)
 
   return inversifyContainer
 }
