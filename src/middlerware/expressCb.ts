@@ -5,3 +5,10 @@ export type expressCb = (
   response: Response,
   next?: NextFunction
 ) => void
+
+export type expressErrorCb = (
+  error: any,
+  request: Request,
+  response: Response,
+  next?: NextFunction
+) => void

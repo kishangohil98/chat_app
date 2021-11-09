@@ -5,6 +5,7 @@ import { INVERSIFY_TYPES } from '../../inversify/inversifyTypes'
 import { IRouterController } from '../IRouterController'
 import { EMAIL_ALREADY_REGISTERED } from '../../common/errorMessages'
 import { UserRegistrationValidationMiddleware } from './UserRegistrationValidationMiddleware'
+import { AuthenticationMiddleware } from '../../middlerware/AuthenticationMiddleware'
 
 @injectable()
 export class UserController implements IRouterController {
@@ -15,19 +16,37 @@ export class UserController implements IRouterController {
     @inject(INVERSIFY_TYPES.UserRepository)
     private userRepository: IUserRepository,
     @inject(INVERSIFY_TYPES.UserRegistrationValidationMiddleware)
-    private userRegistrationValidationMiddleware: UserRegistrationValidationMiddleware
+    private userRegistrationValidationMiddleware: UserRegistrationValidationMiddleware,
+    @inject(INVERSIFY_TYPES.AuthenticationMiddleware)
+    private authenticationMiddleware: AuthenticationMiddleware
   ) {
     this.router = express.Router()
     this.initializeRoutes()
   }
   private initializeRoutes() {
     this.router.get(this.path, this.getAllUsers)
+
     this.router.post(
       `${this.path}/register`,
       this.userRegistrationValidationMiddleware.handler(),
       this.registerUser
     )
+
+    this.router.post(`${this.path}/login`, this.login)
+
+    this.router.get(
+      `${this.path}/details`,
+      this.authenticationMiddleware.handler(),
+      this.getUserDetails
+    )
+
+    // this.router.post(
+    //   `${this.path}/add`,
+    //   this.authenticationMiddleware.handler(),
+    //   this.addUser
+    // )
   }
+
   private getAllUsers = async (
     request: express.Request,
     response: express.Response,
@@ -48,8 +67,8 @@ export class UserController implements IRouterController {
     next: express.NextFunction
   ) => {
     try {
-      await this.userRepository.registerUser(request.body)
-      response.json({})
+      const data = await this.userRepository.registerUser(request.body)
+      response.json(data)
     } catch (error) {
       if (error.code === 11000) {
         /**
@@ -59,6 +78,37 @@ export class UserController implements IRouterController {
           message: EMAIL_ALREADY_REGISTERED,
         })
       }
+      next(error)
+    }
+  }
+
+  private login = async (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction
+  ) => {
+    try {
+      if (!request.body.email || !request.body.password) {
+        response.status(400).json({
+          message: 'Request body validation failed for Login',
+        })
+      }
+
+      const loginResponse = await this.userRepository.login(request.body)
+      response.status(200).json({ data: loginResponse })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  private getUserDetails = async (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction
+  ) => {
+    try {
+      response.send('asdas')
+    } catch (error) {
       next(error)
     }
   }

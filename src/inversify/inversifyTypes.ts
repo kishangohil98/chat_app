@@ -14,4 +14,6 @@ export const INVERSIFY_TYPES = {
   UserRegistrationValidationMiddleware: Symbol.for(
     'UserRegistrationValidationMiddleware'
   ),
+  AuthenticationMiddleware: Symbol.for('AuthenticationMiddleware'),
+  ErrorMiddleware: Symbol.for('ErrorMiddleware'),
 }

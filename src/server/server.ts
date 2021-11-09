@@ -4,6 +4,7 @@ import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
 import { IRouterController } from './../controllers/IRouterController'
 import { ILogger } from '../common/logger/ILogger'
 import { LoggerMiddleware } from '../middlerware/LoggerMiddleware'
+import { ErrorMiddleware } from '../middlerware/ErrorMiddleware'
 
 @injectable()
 export class Server {
@@ -13,11 +14,14 @@ export class Server {
     @multiInject(INVERSIFY_TYPES.Controller) controllers: IRouterController[],
     @inject(INVERSIFY_TYPES.Logger) private logger: ILogger,
     @inject(INVERSIFY_TYPES.LoggerMiddleware)
-    private loggerMiddlreware: LoggerMiddleware
+    private loggerMiddlreware: LoggerMiddleware,
+    @inject(INVERSIFY_TYPES.ErrorMiddleware)
+    private errorMiddleware: ErrorMiddleware
   ) {
     this.app = express()
     this.initializeMiddleware()
     this.initializeControllers(controllers)
+    this.initializeErrorHandling()
   }
 
   public listen() {
@@ -29,6 +33,10 @@ export class Server {
   private initializeMiddleware() {
     this.app.use(express.json())
     this.app.use(this.loggerMiddlreware.handler())
+  }
+
+  private initializeErrorHandling() {
+    this.app.use(this.errorMiddleware.handler())
   }
 
   private initializeControllers(controllers: IRouterController[]) {

@@ -1,20 +1,33 @@
 import { IUserDatastore } from './interface/IUserDatastore'
-import { User } from '../entities/User'
+import { User, IUser } from '../entities/User'
 import { injectable } from 'inversify'
 import { IUserRegistrationSchema } from '../controllers/UserController/UserRegistrationValidationMiddleware'
 import * as cryptoJs from 'crypto-js'
 
 @injectable()
 export class UserDatastore implements IUserDatastore {
-  public async addUser(body: IUserRegistrationSchema): Promise<void> {
+  public async addUser(body: IUserRegistrationSchema): Promise<IUser> {
     const user = new User()
 
     user.email = body.email
-    user.password = cryptoJs.AES.encrypt(
-      body.password,
-      process.env.ENCRYPTION_KEY!
-    ).toString()
+    user.password = cryptoJs.MD5(body.password).toString()
 
     await user.save()
+
+    return user
+  }
+
+  public async login({
+    email,
+    password,
+  }: {
+    email: string
+    password: string
+  }): Promise<IUser | null> {
+    const encryptedPassword = cryptoJs.MD5(password).toString()
+    return User.findOne({
+      email,
+      password: encryptedPassword,
+    }).exec()
   }
 }
