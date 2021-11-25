@@ -40,6 +40,7 @@ export class AuthenticationMiddleware {
           return
         } else {
           this.logger.info('Authentication successful', payload)
+          request.body._payload = payload
           next()
         }
       })

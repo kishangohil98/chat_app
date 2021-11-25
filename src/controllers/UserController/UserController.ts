@@ -6,6 +6,7 @@ import { IRouterController } from '../IRouterController'
 import { EMAIL_ALREADY_REGISTERED } from '../../common/errorMessages'
 import { UserRegistrationValidationMiddleware } from './UserRegistrationValidationMiddleware'
 import { AuthenticationMiddleware } from '../../middlerware/AuthenticationMiddleware'
+import { BadRequestException } from '../../common/exceptions/BadRequestException'
 
 @injectable()
 export class UserController implements IRouterController {
@@ -40,11 +41,17 @@ export class UserController implements IRouterController {
       this.getUserDetails
     )
 
-    // this.router.post(
-    //   `${this.path}/add`,
-    //   this.authenticationMiddleware.handler(),
-    //   this.addUser
-    // )
+    this.router.get(
+      `${this.path}/list`,
+      this.authenticationMiddleware.handler(),
+      this.listUsers
+    )
+
+    this.router.post(
+      `${this.path}/add`,
+      this.authenticationMiddleware.handler(),
+      this.addUserToChat
+    )
   }
 
   private getAllUsers = async (
@@ -53,7 +60,7 @@ export class UserController implements IRouterController {
     next: express.NextFunction
   ) => {
     try {
-      await this.userRepository.getUser()
+      await this.userRepository.getUser('s')
       response.json({})
     } catch (error) {
       console.error(error)
@@ -108,6 +115,43 @@ export class UserController implements IRouterController {
   ) => {
     try {
       response.send('asdas')
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  private listUsers = async (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction
+  ) => {
+    try {
+      // Making non-empty
+    } catch (error) {
+      next(error)
+    }
+  }
+  private addUserToChat = async (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction
+  ) => {
+    try {
+      if (!request.body.userId) {
+        throw new BadRequestException('User id is required')
+      }
+      const user = await this.userRepository.getUser(
+        request.body._payload?.user?._id
+      )
+      if (!user) {
+        return response.status(403).json({
+          message: 'Authentication failed, User not found',
+        })
+      }
+
+      await this.userRepository.addUserToChat(user, request.body.userId)
+
+      response.json({})
     } catch (error) {
       next(error)
     }

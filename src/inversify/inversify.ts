@@ -2,6 +2,8 @@ import { Container } from 'inversify'
 // Datastores
 import { UserDatastore } from '../database/UserDatastore'
 import { IUserDatastore } from '../database/interface/IUserDatastore'
+import { GroupDatastore } from '../database/GroupDatastore'
+import { IGroupDatastore } from '../database/interface/IGroupDatastore'
 
 // Repositories
 import { IUserRepository } from '../repositories/interface/IUserRepository'
@@ -37,6 +39,9 @@ export function initialiseDatastore(container: Container): Container {
   container
     .bind<IUserDatastore>(INVERSIFY_TYPES.UserDatastore)
     .to(UserDatastore)
+  container
+    .bind<IGroupDatastore>(INVERSIFY_TYPES.GroupDatastore)
+    .to(GroupDatastore)
   return container
 }
 

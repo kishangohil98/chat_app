@@ -11,7 +11,7 @@ export interface IUserPayload {
 }
 export interface IUserRepository {
   registerUser(body: IUserRegistrationSchema): Promise<IUserWithToken>
-  getUser(): Promise<void>
+  getUser(id: string): Promise<IUser | null>
 
   login({
     email,
@@ -20,4 +20,8 @@ export interface IUserRepository {
     email: string
     password: string
   }): Promise<IUserWithToken>
+
+  getListOfUsers(user: IUser): Promise<IUser[]>
+
+  addUserToChat(user: IUser, userId: string): Promise<void>
 }

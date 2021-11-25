@@ -1,6 +1,6 @@
 import * as Mongoose from 'mongoose'
 
-enum GroupType {
+export enum GroupType {
   GROUP = 'GROUP',
   DM = 'DM', // Direct Message(one to one chat)
 }
