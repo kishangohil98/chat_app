@@ -48,9 +48,21 @@ export class UserController implements IRouterController {
     )
 
     this.router.post(
-      `${this.path}/add`,
+      `${this.path}/group`,
       this.authenticationMiddleware.handler(),
-      this.addUserToChat
+      this.addUserToGroup
+    )
+
+    this.router.get(
+      `${this.path}/group`,
+      this.authenticationMiddleware.handler(),
+      this.getListOfGroup
+    )
+
+    this.router.get(
+      `${this.path}/group/new`,
+      this.authenticationMiddleware.handler(),
+      this.getNewGroup
     )
   }
 
@@ -131,7 +143,8 @@ export class UserController implements IRouterController {
       next(error)
     }
   }
-  private addUserToChat = async (
+
+  private addUserToGroup = async (
     request: express.Request,
     response: express.Response,
     next: express.NextFunction
@@ -149,9 +162,45 @@ export class UserController implements IRouterController {
         })
       }
 
-      await this.userRepository.addUserToChat(user, request.body.userId)
+      await this.userRepository.addUserToGroup(user, request.body.userId)
 
       response.json({})
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  private getListOfGroup = async (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction
+  ) => {
+    try {
+      const user = await this.userRepository.getUser(
+        request.body._payload?.user?._id
+      )
+
+      const groups = await this.userRepository.getListOfGroup(user)
+
+      response.json(groups)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  private getNewGroup = async (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction
+  ) => {
+    try {
+      const user = await this.userRepository.getUser(
+        request.body._payload?.user?._id
+      )
+
+      const groups = await this.userRepository.getNewGroup(user)
+
+      response.json(groups)
     } catch (error) {
       next(error)
     }

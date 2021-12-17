@@ -10,7 +10,7 @@ import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
 import { IUserRegistrationSchema } from '../controllers/UserController/UserRegistrationValidationMiddleware'
 import * as JWT from 'jsonwebtoken'
 import { IUser, User } from '../entities/User'
-import { Group, GroupType } from '../entities/Group'
+import { Group, IGroup, GroupType } from '../entities/Group'
 import { NotFoundException } from '../common/exceptions/NotFoundException'
 import * as Mongoose from 'mongoose'
 
@@ -36,8 +36,14 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  public async getUser(id: string): Promise<IUser | null> {
-    return User.findById(id)
+  public async getUser(id: string): Promise<IUser> {
+    const user = await User.findById(id)
+
+    if (!user) {
+      throw new NotFoundException('User not found')
+    }
+
+    return user
   }
 
   public async login({
@@ -63,7 +69,18 @@ export class UserRepository implements IUserRepository {
     return []
   }
 
-  public async addUserToChat(user: IUser, userId: string): Promise<void> {
+  /**
+   * Add user's entry in group model
+   * @param user
+   * @param userId
+   * @returns
+   */
+  public async addUserToGroup(user: IUser, userId: string): Promise<void> {
+    const findUser = await User.findById(userId)
+    if (!findUser) {
+      throw new NotFoundException('User not found', 'userId')
+    }
+
     const groupData = await Group.findOne({
       userIds: [
         Mongoose.Types.ObjectId(user._id),
@@ -86,6 +103,28 @@ export class UserRepository implements IUserRepository {
     group.createdBy = Mongoose.Types.ObjectId(user._id)
 
     await this.groupDatastore.addGroup(group)
+  }
+
+  /**
+   * Get list of user's group and DM
+   * @param user
+   * @returns {Promise<IGroup[]}
+   */
+  public async getListOfGroup(user: IUser): Promise<IGroup[]> {
+    return Group.find({
+      userIds: user.id,
+    })
+      .populate('user')
+      .exec()
+  }
+
+  /**
+   * Get list of user's group and DM
+   * @param user
+   * @returns {Promise<IGroup[]}
+   */
+  public async getNewGroup(user: IUser): Promise<IGroup[]> {
+    return Group.find().where('userIds').nin([user.id]).populate('user').exec()
   }
 
   private async generateJWToken(user: IUser): Promise<string> {

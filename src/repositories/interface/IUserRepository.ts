@@ -1,4 +1,5 @@
 import { IUser } from '../../entities/User'
+import { IGroup } from '../../entities/Group'
 import { IUserRegistrationSchema } from '../../controllers/UserController/UserRegistrationValidationMiddleware'
 
 export interface IUserWithToken {
@@ -11,7 +12,8 @@ export interface IUserPayload {
 }
 export interface IUserRepository {
   registerUser(body: IUserRegistrationSchema): Promise<IUserWithToken>
-  getUser(id: string): Promise<IUser | null>
+
+  getUser(id: string): Promise<IUser>
 
   login({
     email,
@@ -23,5 +25,9 @@ export interface IUserRepository {
 
   getListOfUsers(user: IUser): Promise<IUser[]>
 
-  addUserToChat(user: IUser, userId: string): Promise<void>
+  addUserToGroup(user: IUser, userId: string): Promise<void>
+
+  getListOfGroup(user: IUser): Promise<IGroup[]>
+
+  getNewGroup(user: IUser): Promise<IGroup[]>
 }
