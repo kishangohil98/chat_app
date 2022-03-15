@@ -9,8 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "node_modules/.bin/tslint -c tslint.json 'src/**/*.ts'",
     "prettier": "npm run prettier:base -- --write \"*.{ts,tsx}\" \"src/**/*.{ts,tsx}\"",
-    "format": "prettier \"{src,config}/**/*.ts\" --write",
-    "prepare": "husky install"
+    "format": "prettier \"{src,config}/**/*.ts\" --write"
   },
   "repository": {
     "type": "git",
@@ -34,14 +33,11 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^13.2.0",
-    "@commitlint/config-conventional": "^13.2.0",
     "@types/crypto-js": "^4.0.2",
     "@types/express": "^4.17.12",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^16.0.0",
-    "husky": "^7.0.0",
     "nodemon": "^2.0.9",
     "prettier": "^2.3.2",
     "reflect-metadata": "^0.1.13",
