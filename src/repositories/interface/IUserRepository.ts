@@ -1,4 +1,4 @@
-import { IUser } from '../../entities/User'
+import { IUser } from '../../entities/user'
 import { IGroup } from '../../entities/Group'
 import { IUserRegistrationSchema } from '../../controllers/UserController/UserRegistrationValidationMiddleware'
 
@@ -13,7 +13,7 @@ export interface IUserPayload {
 export interface IUserRepository {
   registerUser(body: IUserRegistrationSchema): Promise<IUserWithToken>
 
-  getUser(id: string): Promise<IUser>
+  getUser(id: string): Promise<IUser | null>
 
   login({
     email,

@@ -37,12 +37,8 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  public async getUser(id: string): Promise<IUser> {
+  public async getUser(id: string): Promise<IUser | null> {
     const user = await User.findById(id)
-
-    if (!user) {
-      throw new NotFoundException('User not found')
-    }
 
     return user
   }

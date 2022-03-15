@@ -176,9 +176,7 @@ export class UserController implements IRouterController {
     next: express.NextFunction
   ) => {
     try {
-      const user = await this.userRepository.getUser(
-        request.body._payload?.user?._id
-      )
+      const user = this.authenticationMiddleware.getUserPrinciple(request)
 
       const groups = await this.userRepository.getListOfGroup(user)
 
@@ -194,9 +192,7 @@ export class UserController implements IRouterController {
     next: express.NextFunction
   ) => {
     try {
-      const user = await this.userRepository.getUser(
-        request.body._payload?.user?._id
-      )
+      const user = this.authenticationMiddleware.getUserPrinciple(request)
 
       const groups = await this.userRepository.getNewGroup(user)
 
