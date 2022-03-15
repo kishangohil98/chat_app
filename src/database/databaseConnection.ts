@@ -1,12 +1,13 @@
 import * as Mongoose from 'mongoose'
 import { IDatabaseConnection } from './IDatabaseConnection'
 import { WinstonLogger } from '../common/logger/WinstonLogger'
+import { config } from '../../config'
 
 export class DatabaseConnection implements IDatabaseConnection {
   public connect(): void {
     const logger = new WinstonLogger()
     try {
-      const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@chatappcluster.wbbx5.mongodb.net/ChatAppCluster?retryWrites=true&w=majority`
+      const uri = `mongodb+srv://${config.MONGO_USER}:${config.MONGO_PASSWORD}@chatappcluster.wbbx5.mongodb.net/ChatAppCluster?retryWrites=true&w=majority`
 
       Mongoose.connect(uri, {
         useNewUrlParser: true,

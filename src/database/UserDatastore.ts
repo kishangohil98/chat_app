@@ -1,5 +1,5 @@
 import { IUserDatastore } from './interface/IUserDatastore'
-import { User, IUser } from '../entities/User'
+import { User, IUser } from '../entities/user'
 import { injectable } from 'inversify'
 import { IUserRegistrationSchema } from '../controllers/UserController/UserRegistrationValidationMiddleware'
 import * as cryptoJs from 'crypto-js'

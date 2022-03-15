@@ -5,6 +5,7 @@ import { IRouterController } from './../controllers/IRouterController'
 import { ILogger } from '../common/logger/ILogger'
 import { LoggerMiddleware } from '../middlerware/LoggerMiddleware'
 import { ErrorMiddleware } from '../middlerware/ErrorMiddleware'
+import { config } from '../../config'
 
 @injectable()
 export class Server {
@@ -25,8 +26,8 @@ export class Server {
   }
 
   public listen() {
-    this.app.listen(process.env.PORT, () => {
-      this.logger.info(`App listening on the port ${process.env.PORT}`)
+    this.app.listen(config.PORT, () => {
+      this.logger.info(`App listening on the port ${config.PORT}`)
     })
   }
 

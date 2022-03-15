@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 import 'reflect-metadata';
-import { Server } from './src/server/Server';
+import { Server } from './src/server/server';
 import { INVERSIFY_TYPES } from './src/inversify/inversifyTypes';
 import { initialiseRepositories, initialiseServer, initialiseDatastore, initialiseLogger } from './src/inversify/inversify';
 import { DatabaseConnection } from './src/database/databaseConnection';

@@ -4,6 +4,7 @@ import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
 import { expressCb } from './expressCb'
 import * as express from 'express'
 import * as JWT from 'jsonwebtoken'
+import { config } from '../../config'
 
 @injectable()
 export class AuthenticationMiddleware {
@@ -31,7 +32,7 @@ export class AuthenticationMiddleware {
         return
       }
 
-      JWT.verify(token, process.env.JWT_SECRET_KEY!, (err, payload) => {
+      JWT.verify(token, config.JWT_SECRET_KEY, (err, payload) => {
         if (err) {
           this.logger.error('Authentication failed')
           response.status(403).json({

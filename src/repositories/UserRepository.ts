@@ -9,10 +9,11 @@ import { IGroupDatastore } from '../database/interface/IGroupDatastore'
 import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
 import { IUserRegistrationSchema } from '../controllers/UserController/UserRegistrationValidationMiddleware'
 import * as JWT from 'jsonwebtoken'
-import { IUser, User } from '../entities/User'
+import { IUser, User } from '../entities/user'
 import { Group, IGroup, GroupType } from '../entities/Group'
 import { NotFoundException } from '../common/exceptions/NotFoundException'
 import * as Mongoose from 'mongoose'
+import { config } from '../../config'
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -132,7 +133,7 @@ export class UserRepository implements IUserRepository {
       user,
     }
 
-    return JWT.sign(payload, process.env.JWT_SECRET_KEY!, {
+    return JWT.sign(payload, config.JWT_SECRET_KEY, {
       expiresIn: '1h',
     })
   }
