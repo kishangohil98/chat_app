@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node ./index.ts",
-    "start:dev": "nodemon",
+    "start:dev": "nodemon & npm start --prefix ../client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "node_modules/.bin/tslint -c tslint.json 'src/**/*.ts'",
     "prettier": "npm run prettier:base -- --write \"*.{ts,tsx}\" \"src/**/*.{ts,tsx}\"",

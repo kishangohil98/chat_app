@@ -1,6 +1,5 @@
 import {
   IUserRepository,
-  IUserWithToken,
   IUserPayload,
 } from './interface/IUserRepository'
 import { inject, injectable } from 'inversify'
@@ -25,16 +24,9 @@ export class UserRepository implements IUserRepository {
   ) {}
   public async registerUser(
     body: IUserRegistrationSchema
-  ): Promise<IUserWithToken> {
-    const user = await this.userDatastore.addUser(body)
+  ): Promise<IUser> {
+    return this.userDatastore.addUser(body)
 
-    // Get JWT token
-    const token = await this.generateJWToken(user)
-
-    return {
-      user,
-      token,
-    }
   }
 
   public async getUser(id: string): Promise<IUser | null> {
@@ -49,17 +41,29 @@ export class UserRepository implements IUserRepository {
   }: {
     email: string
     password: string
-  }): Promise<IUserWithToken> {
+  }): Promise<IUser> {
     const user = await this.userDatastore.login({ email, password })
     if (!user) {
       throw new NotFoundException('User not found')
     }
 
-    const token = await this.generateJWToken(user)
-    return {
-      user,
-      token,
+    const { accessToken, refreshToken } = await UserRepository.generateUserTokens(user)
+
+    await User.updateOne({
+      _id: user.id
+    }, {
+      $set: {
+        accessToken,
+        refreshToken
+      }
+    });
+
+    const userWithUpdatedToken = await User.findById(user.id);
+    if (!userWithUpdatedToken) {
+      throw new NotFoundException('User with tokens not found');
     }
+
+    return userWithUpdatedToken;
   }
 
   public async getListOfUsers(user: IUser): Promise<IUser[]> {
@@ -124,7 +128,13 @@ export class UserRepository implements IUserRepository {
     return Group.find().where('userIds').nin([user.id]).populate('user').exec()
   }
 
-  private async generateJWToken(user: IUser): Promise<string> {
+
+  /**
+   * Generate JWT Access Token
+   * @param user 
+   * @returns {Promise<string>}
+   */
+  static async generateJWToken(user: IUser): Promise<string> {
     const payload: IUserPayload = {
       user,
     }
@@ -132,5 +142,37 @@ export class UserRepository implements IUserRepository {
     return JWT.sign(payload, config.JWT_SECRET_KEY, {
       expiresIn: '1h',
     })
+  }
+
+  /**
+   * Generate JWT Refresh Token
+   * @param user 
+   * @returns {Promise<string>}
+   */
+  static async generateJWTRefreshToken(user: IUser): Promise<string> {
+    const payload: IUserPayload = {
+      user,
+    }
+
+    return JWT.sign(payload, config.JWT_REFRESH_SECRET_KEY, {
+      expiresIn: '1h',
+    })
+  }
+
+  /**
+   * Generate both tokens
+   * @param user
+   */
+  static async generateUserTokens(user: IUser): Promise<{
+    accessToken: string;
+    refreshToken: string;
+  }> {
+    const accessToken = await UserRepository.generateJWToken(user);
+    const refreshToken = await this.generateJWTRefreshToken(user);
+
+    return {
+      accessToken,
+      refreshToken
+    };
   }
 }

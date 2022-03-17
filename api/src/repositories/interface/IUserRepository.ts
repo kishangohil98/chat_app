@@ -2,16 +2,12 @@ import { IUser } from '../../entities/user'
 import { IGroup } from '../../entities/Group'
 import { IUserRegistrationSchema } from '../../controllers/UserController/UserRegistrationValidationMiddleware'
 
-export interface IUserWithToken {
-  user: IUser
-  token: string
-}
 
 export interface IUserPayload {
   user: IUser
 }
 export interface IUserRepository {
-  registerUser(body: IUserRegistrationSchema): Promise<IUserWithToken>
+  registerUser(body: IUserRegistrationSchema): Promise<IUser>
 
   getUser(id: string): Promise<IUser | null>
 
@@ -21,7 +17,7 @@ export interface IUserRepository {
   }: {
     email: string
     password: string
-  }): Promise<IUserWithToken>
+  }): Promise<IUser>
 
   getListOfUsers(user: IUser): Promise<IUser[]>
 

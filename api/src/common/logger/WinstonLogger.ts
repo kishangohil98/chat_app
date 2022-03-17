@@ -34,3 +34,5 @@ export class WinstonLogger implements ILogger {
     this.logger.error(message, metaData)
   }
 }
+
+export const winstonLogger = new WinstonLogger();

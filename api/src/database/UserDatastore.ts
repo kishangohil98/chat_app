@@ -7,14 +7,10 @@ import * as cryptoJs from 'crypto-js'
 @injectable()
 export class UserDatastore implements IUserDatastore {
   public async addUser(body: IUserRegistrationSchema): Promise<IUser> {
-    const user = new User()
-
-    user.email = body.email
-    user.password = cryptoJs.MD5(body.password).toString()
-
-    await user.save()
-
-    return user
+    return User.create({
+      email: body.email,
+      password: cryptoJs.MD5(body.password).toString()
+    });
   }
 
   public async login({
