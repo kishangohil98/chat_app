@@ -1,13 +1,8 @@
 import React from 'react';
-// import { Route, Routes } from "react-router";
+import { useRoutes, RouteObject } from 'react-router-dom';
 import { Home } from '../Pages/Home';
 import { Login } from '../Authentication/Login';
-import {
-  useRoutes,
-  RouteObject
-} from "react-router-dom";
 import { AuthGuard } from '../components/Guards/AuthGuard';
-
 
 export const appRoutes: RouteObject[] = [
   {
@@ -16,17 +11,16 @@ export const appRoutes: RouteObject[] = [
       <AuthGuard>
         <Home />
       </AuthGuard>
-    )
+    ),
   },
   {
     path: 'login',
-    element: <Login />
-  }
+    element: <Login />,
+  },
 ];
 
 export const RoutesComponent = () => {
   const routes = useRoutes(appRoutes);
 
   return routes;
-}
-  
+};

@@ -1,37 +1,33 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-
-// type withAuthType = (RenderComponent: React.FunctionComponent) => React.FunctionComponent;
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
-    children: JSX.Element
+  children: JSX.Element;
 };
 
 export const AuthGuard = (props: Props) => {
-    const { children } = props;
-    const navigate = useNavigate();
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const { children } = props;
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-    const navigateToLogin = useCallback(() => {
-        navigate('/login');
-    }, [navigate]);
+  const navigateToLogin = useCallback(() => {
+    navigate('/login');
+  }, [navigate]);
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            navigateToLogin();
-        } else {
-            // TODO: validate token with API call
-            setIsAuthenticated(true);
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    if (isAuthenticated) {
-        return (<>
-            {children}
-        </>);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigateToLogin();
+    } else {
+      // TODO: validate token with API call
+      setIsAuthenticated(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    return null;
-}
+  if (isAuthenticated) {
+    return children;
+  }
+
+  return null;
+};
