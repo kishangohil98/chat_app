@@ -1,3 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import axiosInstance from '../Axios';
 
-export const Login = () => <div>Login</div>;
+export const Login = () => {
+    useEffect(() => {
+      axiosInstance.get('user');
+    }, [])
+    
+    return (
+        <div>Login</div>
+    );
+}
