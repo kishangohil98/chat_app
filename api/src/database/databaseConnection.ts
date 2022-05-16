@@ -7,8 +7,8 @@ export class DatabaseConnection implements IDatabaseConnection {
   public connect(): void {
     const logger = new WinstonLogger()
     try {
-      const uri = `mongodb+srv://${config.MONGO_USER}:${config.MONGO_PASSWORD}@chatappcluster.wbbx5.mongodb.net/ChatAppCluster?retryWrites=true&w=majority`
-
+      const uri = config.MONGO_CONNECT_URL;
+  
       Mongoose.connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,

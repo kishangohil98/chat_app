@@ -1,7 +1,8 @@
-import { ServerInit } from './server';
 import * as dotenv from 'dotenv';
-
 dotenv.config();
+    
+import { ServerInit } from './server';
+
 let serverInit: ServerInit | undefined;
 
 if (!serverInit) {
