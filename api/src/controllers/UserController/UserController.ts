@@ -72,8 +72,8 @@ export class UserController implements IRouterController {
     next: express.NextFunction
   ) => {
     try {
-      await this.userRepository.getUser('s')
-      response.json({})
+      const users = await this.userRepository.getAllUsers();
+      response.json(users)
     } catch (error) {
       console.error(error)
       next(error)

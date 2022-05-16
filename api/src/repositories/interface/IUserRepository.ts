@@ -10,6 +10,8 @@ export interface IUserRepository {
   registerUser(body: IUserRegistrationSchema): Promise<IUser>
 
   getUser(id: string): Promise<IUser | null>
+  
+  getAllUsers(): Promise<IUser[]>
 
   login({
     email,

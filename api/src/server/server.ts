@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { inject, injectable, multiInject } from 'inversify'
+import * as cors from 'cors'
 import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
 import { IRouterController } from './../controllers/IRouterController'
 import { ILogger } from '../common/logger/ILogger'
@@ -32,7 +33,20 @@ export class Server {
   }
 
   private initializeMiddleware() {
+    const corsOptions = {
+      origin: config.CORS_ORIGIN,
+      methods: [
+        'GET',
+        'POST',
+        'PUT',
+        'DELETE',
+      ],
+      allowedHeaders: [
+        'Content-Type',
+      ],
+    };
     this.app.use(express.json())
+    this.app.use(cors(corsOptions))
     this.app.use(this.loggerMiddlreware.handler())
   }
 

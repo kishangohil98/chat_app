@@ -35,6 +35,13 @@ export class UserRepository implements IUserRepository {
     return user
   }
 
+  /**
+   * To get all users in the DB
+   */
+   public async getAllUsers(): Promise<IUser[]> {
+    return User.find();
+  }
+
   public async login({
     email,
     password,
