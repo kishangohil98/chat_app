@@ -72,7 +72,7 @@ export class UserController implements IRouterController {
     next: express.NextFunction
   ) => {
     try {
-      const users = await this.userRepository.getAllUsers();
+      const users = await this.userRepository.getAllUsers()
       response.json(users)
     } catch (error) {
       console.error(error)
@@ -114,7 +114,7 @@ export class UserController implements IRouterController {
       }
 
       const loginResponse = await this.userRepository.login(request.body)
-      response.status(200).json({ data: loginResponse })
+      response.status(200).json(loginResponse)
     } catch (error) {
       next(error)
     }

@@ -22,9 +22,11 @@ const theme = createTheme();
 export const SignUp = () => {
   const navigate = useNavigate();
 
-  if (localStorage.getItem(ACCESS_TOKEN)) {
-    navigate('/');
-  }
+  React.useEffect(() => {
+    if (localStorage.getItem(ACCESS_TOKEN)) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const { handleSubmit, handleChange, values, touched, errors, handleBlur } = useFormik({
     initialValues: {
