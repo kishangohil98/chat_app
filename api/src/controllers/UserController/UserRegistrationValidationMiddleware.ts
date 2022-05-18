@@ -5,11 +5,15 @@ import { ValidationMiddleware } from '../../middlerware/ValidationMiddleware'
 import * as Joi from 'joi'
 
 export const UserRegistrationSchema = Joi.object().keys({
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
   email: Joi.string().email().required(),
-  password: Joi.string().required().min(8).max(24),
+  password: Joi.string().required().min(6).max(24),
 })
 
 export interface IUserRegistrationSchema {
+  firstName: string
+  lastName: string
   email: string
   password: string
 }

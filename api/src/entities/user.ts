@@ -14,6 +14,16 @@ export interface IUser extends Mongoose.Document {
 
 const userSchema: Mongoose.Schema = new Mongoose.Schema(
   {
+    firstName: {
+      type: Mongoose.Schema.Types.String,
+      required: true,
+      trim: true,
+    },
+    lastName: {
+      type: Mongoose.Schema.Types.String,
+      required: true,
+      trim: true,
+    },
     email: {
       type: Mongoose.Schema.Types.String,
       unique: true,
@@ -41,14 +51,17 @@ const userSchema: Mongoose.Schema = new Mongoose.Schema(
   {
     timestamps: true,
   }
-).pre('save', async function<IUser>(next) {
-  winstonLogger.info(`Running Pre Save hook of Mongoose with User: ${this}`);
+).pre('save', async function <IUser>(next) {
+  winstonLogger.info(`Running Pre Save hook of Mongoose with User: ${this}`)
 
   if (this.isNew) {
-    const { accessToken, refreshToken } = await UserRepository.generateUserTokens(this);
+    const { accessToken, refreshToken } =
+      await UserRepository.generateUserTokens(this)
     this.set('accessToken', accessToken)
     this.set('refreshToken', refreshToken)
-    winstonLogger.info(`Updating access and refresh token of User in Pre Save hook with User: ${this}`);
+    winstonLogger.info(
+      `Updating access and refresh token of User in Pre Save hook with User: ${this}`
+    )
   }
 
   next()
