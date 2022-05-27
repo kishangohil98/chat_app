@@ -1,9 +1,12 @@
 import React from 'react';
 import { useRoutes, RouteObject } from 'react-router-dom';
-import { Home } from '../Pages/Home';
+import { Home as HomeComponent } from '../Pages/Home';
 import { Login } from '../Authentication/Login';
 import { SignUp } from '../Authentication/SignUp';
 import { AuthGuard } from '../components/Guards/AuthGuard';
+import { withLayout } from '../Layout';
+
+const Home = withLayout(HomeComponent);
 
 export const appRoutes: RouteObject[] = [
   {
