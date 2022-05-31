@@ -5,6 +5,7 @@ import { RoutesComponent } from './Routes/RoutesComponent';
 import { ThemeProvider } from '@mui/material/styles';
 import { getTheme } from './Theme/index';
 import { CssBaseline, useMediaQuery } from '@mui/material';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 
 const App = () => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
