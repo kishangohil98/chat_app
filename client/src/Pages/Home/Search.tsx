@@ -62,7 +62,7 @@ export const SearchComponent = () => {
         }}
       >
         <StyledButton variant="text" startIcon={<Search />} onClick={handleClickOpen}>
-          Search...
+          Search
           <Typography
             component={'span'}
             sx={{
