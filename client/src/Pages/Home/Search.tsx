@@ -11,12 +11,11 @@ import {
   DialogContentText,
   IconButton,
 } from '@mui/material';
-import { Search } from '@mui/icons-material';
+import { Search, Close } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
-import { Close } from '@mui/icons-material';
 
-const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
+const StyledButton = styled(Button)<ButtonProps>(() => ({
   textTransform: 'none',
   width: '100%',
   border: '0.5px solid transparent',
@@ -27,7 +26,7 @@ const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
   },
 }));
 
-export const SearchComponent = () => {
+export function SearchComponent() {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -44,7 +43,7 @@ export const SearchComponent = () => {
         setOpen(!open);
       }
     },
-    [open]
+    [open],
   );
 
   useEffect(() => {
@@ -64,7 +63,7 @@ export const SearchComponent = () => {
         <StyledButton variant="text" startIcon={<Search />} onClick={handleClickOpen}>
           Search
           <Typography
-            component={'span'}
+            component="span"
             sx={{
               fontSize: '12px',
               backgroundColor: 'common.white',
@@ -84,7 +83,7 @@ export const SearchComponent = () => {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          {'Search for Users Or Groups'}
+          Search for Users Or Groups
           <IconButton
             aria-label="close"
             onClick={handleClose}
@@ -105,8 +104,8 @@ export const SearchComponent = () => {
             vitae sunt atque, molestiae praesentium necessitatibus non.
           </DialogContentText>
         </DialogContent>
-        <DialogActions></DialogActions>
+        <DialogActions />
       </Dialog>
     </>
   );
-};
+}

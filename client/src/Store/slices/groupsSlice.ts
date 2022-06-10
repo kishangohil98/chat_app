@@ -16,7 +16,7 @@ const initialState: GroupState = {
 };
 export const groupsSlice = createSlice({
   name: 'groups',
-  initialState: initialState,
+  initialState,
   reducers: {
     changeGroupName: (state, action: PayloadAction<string>) => {
       state.name = action.payload || 'Group2';
@@ -24,15 +24,9 @@ export const groupsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchGroups.pending, (state) => {
-        return { ...state, name: 'api-loading' };
-      })
-      .addCase(fetchGroups.fulfilled, (state, action) => {
-        return { ...state, name: 'from-api' };
-      })
-      .addCase(fetchGroups.rejected, (state, action) => {
-        return { ...state, name: 'api-error' };
-      });
+      .addCase(fetchGroups.pending, (state) => ({ ...state, name: 'api-loading' }))
+      .addCase(fetchGroups.fulfilled, (state) => ({ ...state, name: 'from-api' }))
+      .addCase(fetchGroups.rejected, (state) => ({ ...state, name: 'api-error' }));
   },
 });
 

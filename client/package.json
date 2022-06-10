@@ -32,13 +32,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "npx prettier --write ."
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "format": "npx prettier --write .",
+    "lint": "npx eslint src/***/**/*",
+    "lint:fix": "npx eslint src/***/**/* --fix"
   },
   "browserslist": {
     "production": [
@@ -54,6 +50,15 @@
   },
   "devDependencies": {
     "@types/react-redux": "^7.1.24",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "eslint": "^8.17.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.5.0",
     "prettier": "^2.6.2"
   }
 }

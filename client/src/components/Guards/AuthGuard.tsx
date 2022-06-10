@@ -6,7 +6,7 @@ type Props = {
   children: JSX.Element;
 };
 
-export const AuthGuard = (props: Props) => {
+export function AuthGuard(props: Props) {
   const { children } = props;
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -31,4 +31,4 @@ export const AuthGuard = (props: Props) => {
   }
 
   return null;
-};
+}

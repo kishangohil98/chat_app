@@ -11,12 +11,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../Axios';
 import { User } from '../Models/User';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../Static';
-import { useNavigate } from 'react-router-dom';
 
-export const SignUp = () => {
+export function SignUp() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -25,7 +25,9 @@ export const SignUp = () => {
     }
   }, [navigate]);
 
-  const { handleSubmit, handleChange, values, touched, errors, handleBlur } = useFormik({
+  const {
+    handleSubmit, handleChange, values, touched, errors, handleBlur,
+  } = useFormik({
     initialValues: {
       firstName: '',
       lastName: '',
@@ -38,11 +40,12 @@ export const SignUp = () => {
       email: Yup.string().email('Invalid email address').required('Required'),
       password: Yup.string().required('Required').min(6, 'Password must be 6 character long'),
     }),
-    onSubmit: async (values) => {
+    onSubmit: async (onSubmitValues) => {
       try {
-        const { data } = await axiosInstance.post<User>('user/register', values);
+        const { data } = await axiosInstance.post<User>('user/register', onSubmitValues);
         if (data.accessToken && data.refreshToken) {
-          // Setting access and refresh token to local storage to identify user's principle in browser
+          // Setting access and refresh token to local storage
+          // to identify user's principle in browser
           localStorage.setItem(ACCESS_TOKEN, data.accessToken);
           localStorage.setItem(REFRESH_TOKEN, data.refreshToken);
 
@@ -148,4 +151,4 @@ export const SignUp = () => {
       </Box>
     </Container>
   );
-};
+}

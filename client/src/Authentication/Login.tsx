@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,22 +10,24 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import * as Yup from 'yup';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../Static';
 import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../Static';
 import axiosInstance from '../Axios';
 import { User } from '../Models/User';
-import { useNavigate } from 'react-router-dom';
 
-export const Login = () => {
+export function Login() {
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem(ACCESS_TOKEN)) {
       navigate('/');
     }
   }, [navigate]);
 
-  const { handleSubmit, handleChange, values, touched, errors, handleBlur } = useFormik({
+  const {
+    handleSubmit, handleChange, values, touched, errors, handleBlur,
+  } = useFormik({
     initialValues: {
       email: '',
       password: '',
@@ -34,11 +36,12 @@ export const Login = () => {
       email: Yup.string().email('Invalid email address').required('Required'),
       password: Yup.string().required('Required'),
     }),
-    onSubmit: async (values) => {
+    onSubmit: async (valuesOnSubmit) => {
       try {
-        const { data } = await axiosInstance.post<User>('user/login', values);
+        const { data } = await axiosInstance.post<User>('user/login', valuesOnSubmit);
         if (data.accessToken && data.refreshToken) {
-          // Setting access and refresh token to local storage to identify user's principle in browser
+          // Setting access and refresh token to local storage
+          // to identify user's principle in browser
           localStorage.setItem(ACCESS_TOKEN, data.accessToken);
           localStorage.setItem(REFRESH_TOKEN, data.refreshToken);
 
@@ -96,13 +99,7 @@ export const Login = () => {
             helperText={touched.password && errors.password}
             onBlur={handleBlur}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            color={'primary'}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} color="primary">
             Sign In
           </Button>
           <Grid container>
@@ -113,7 +110,7 @@ export const Login = () => {
             </Grid>
             <Grid item>
               <Link href="/sign-up" variant="body2">
-                {"Don't have an account? Sign Up"}
+                Don&apos;t have an account? Sign Up
               </Link>
             </Grid>
           </Grid>
@@ -121,4 +118,4 @@ export const Login = () => {
       </Box>
     </Container>
   );
-};
+}

@@ -2,8 +2,8 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import { GroupList } from './GroupList';
 
-export const Home = () => (
-  <>
+export function Home() {
+  return (
     <Grid container spacing={0}>
       <Grid item xs={3}>
         <GroupList />
@@ -12,5 +12,5 @@ export const Home = () => (
         <div>Chat</div>
       </Grid>
     </Grid>
-  </>
-);
+  );
+}
