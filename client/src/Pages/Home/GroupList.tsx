@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   List,
@@ -13,8 +13,11 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { SearchComponent } from './Search';
+import { useAppDispath, useAppSelector } from '../../Store/hooks';
+import { getGroupName, changeGroupName } from '../../Store/slices/groupsSlice';
+import { fetchGroups } from '../../Store/services/groups';
 
-export const UserList = () => {
+export const GroupList = () => {
   return (
     <>
       <Box
@@ -36,6 +39,14 @@ const ListBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const ListComponent = () => {
+  const dispatch = useAppDispath();
+  const groupName = useAppSelector(getGroupName);
+
+  useEffect(() => {
+    dispatch(changeGroupName('Kishan`s chat'));
+    dispatch(fetchGroups());
+  }, [dispatch]);
+
   return (
     <>
       <ListBox>
@@ -47,7 +58,7 @@ const ListComponent = () => {
                 <ListItemAvatar>
                   <Avatar alt="Remy Sharp" src="" />
                 </ListItemAvatar>
-                <ListItemText primary="Remy Sharp" secondary="Ali Connors dummy text" />
+                <ListItemText primary={groupName} secondary="Ali Connors dummy text" />
               </ListItemButton>
             </ListItem>
             <Divider variant="fullWidth" component="li" />
@@ -56,7 +67,7 @@ const ListComponent = () => {
                 <ListItemAvatar>
                   <Avatar alt="Remy Sharp" src="" />
                 </ListItemAvatar>
-                <ListItemText primary="Remy Sharp" secondary="Ali Connors dummy text" />
+                <ListItemText primary={groupName} secondary="Ali Connors dummy text" />
               </ListItemButton>
             </ListItem>
             <Divider variant="fullWidth" component="li" />
@@ -65,7 +76,7 @@ const ListComponent = () => {
                 <ListItemAvatar>
                   <Avatar alt="Remy Sharp" src="" />
                 </ListItemAvatar>
-                <ListItemText primary="Remy Sharp" secondary="Ali Connors dummy text" />
+                <ListItemText primary={groupName} secondary="Ali Connors dummy text" />
               </ListItemButton>
             </ListItem>
             <Divider variant="fullWidth" component="li" />

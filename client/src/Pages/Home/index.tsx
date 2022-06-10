@@ -1,12 +1,12 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import { UserList } from './UserList';
+import { GroupList } from './GroupList';
 
 export const Home = () => (
   <>
     <Grid container spacing={0}>
       <Grid item xs={3}>
-        <UserList />
+        <GroupList />
       </Grid>
       <Grid item xs={9}>
         <div>Chat</div>
