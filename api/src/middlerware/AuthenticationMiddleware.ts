@@ -1,12 +1,12 @@
-import { inject, injectable } from 'inversify'
-import { ILogger } from '../common/logger/ILogger'
-import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
-import { expressCb } from './expressCb'
-import * as express from 'express'
-import * as JWT from 'jsonwebtoken'
-import { config } from '../../config'
-import { IUserRepository } from '../repositories/interface/IUserRepository'
-import { IUser } from '../entities/user'
+import { inject, injectable } from 'inversify';
+import * as express from 'express';
+import * as JWT from 'jsonwebtoken';
+import { ILogger } from '../common/logger/ILogger';
+import { INVERSIFY_TYPES } from '../inversify/inversifyTypes';
+import { expressCb } from './expressCb';
+import { config } from '../../config';
+import { IUserRepository } from '../repositories/interface/IUserRepository';
+import { IUser } from '../entities/interfaces/IUser';
 
 @injectable()
 export class AuthenticationMiddleware {
@@ -14,7 +14,7 @@ export class AuthenticationMiddleware {
     @inject(INVERSIFY_TYPES.Logger)
     private logger: ILogger,
     @inject(INVERSIFY_TYPES.UserRepository)
-    private userRepository: IUserRepository
+    private userRepository: IUserRepository,
   ) {}
 
   /**
@@ -24,39 +24,39 @@ export class AuthenticationMiddleware {
     return (
       request: express.Request,
       response: express.Response,
-      next: express.NextFunction
+      next: express.NextFunction,
     ): void => {
-      const token = request.headers.token?.toString()
+      const token = request.headers.token?.toString();
 
       if (!token) {
-        this.logger.info('No access token found')
+        this.logger.info('No access token found');
         response.status(403).json({
           message: 'Authentication failed, Missing JWT Token',
-        })
-        return
+        });
+        return;
       }
 
       JWT.verify(token, config.JWT_SECRET_KEY, async (err, payload) => {
         if (err) {
-          this.logger.error('Authentication failed')
+          this.logger.error('Authentication failed');
           response.status(403).json({
             message: 'Authentication failed, Invalid token',
-          })
+          });
         }
 
-        const user = await this.userRepository.getUser(payload?.user?._id)
+        const user = await this.userRepository.getUser(payload?.user?._id);
 
         if (!user) {
           response.status(403).json({
             message: 'Authentication failed, User not found',
-          })
+          });
         }
 
-        this.logger.info('Authentication successful', payload)
-        request.body._user = user
-        next()
-      })
-    }
+        this.logger.info('Authentication successful', payload);
+        request.body._user = user;
+        next();
+      });
+    };
   }
 
   /**
@@ -64,6 +64,6 @@ export class AuthenticationMiddleware {
    * @returns IUser
    */
   public getUserPrinciple(request: express.Request): IUser {
-    return request.body._user as IUser
+    return request.body._user as IUser;
   }
 }

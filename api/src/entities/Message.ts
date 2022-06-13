@@ -1,4 +1,4 @@
-import * as Mongoose from 'mongoose'
+import * as Mongoose from 'mongoose';
 
 enum MessageType {
   TEXT,
@@ -42,11 +42,11 @@ const messageSchema: Mongoose.Schema = new Mongoose.Schema(
   },
   {
     timestamps: true,
-  }
-)
+  },
+);
 
 export const Message = Mongoose.model<IMessage>(
   'Message',
   messageSchema,
-  'message'
-)
+  'message',
+);

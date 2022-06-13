@@ -1,4 +1,4 @@
-import * as Mongoose from 'mongoose'
+import * as Mongoose from 'mongoose';
 
 export enum GroupType {
   GROUP = 'GROUP',
@@ -50,7 +50,7 @@ const groupSchema: Mongoose.Schema = new Mongoose.Schema(
   },
   {
     timestamps: true,
-  }
-)
+  },
+);
 
-export const Group = Mongoose.model<IGroup>('Group', groupSchema, 'group')
+export const Group = Mongoose.model<IGroup>('Group', groupSchema, 'group');

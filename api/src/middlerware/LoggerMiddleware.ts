@@ -1,9 +1,9 @@
-import { inject, injectable } from 'inversify'
-import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
-import { ILogger } from '../common/logger/ILogger'
-import * as express from 'express'
-import * as morgan from 'morgan'
-import { expressCb } from './expressCb'
+import { inject, injectable } from 'inversify';
+import * as express from 'express';
+import * as morgan from 'morgan';
+import { INVERSIFY_TYPES } from '../inversify/inversifyTypes';
+import { ILogger } from '../common/logger/ILogger';
+import { expressCb } from './expressCb';
 
 @injectable()
 export class LoggerMiddleware {
@@ -15,10 +15,10 @@ export class LoggerMiddleware {
    */
   public handler(): expressCb {
     const loggerStream = {
-      write: message => {
-        this.logger.info(message)
+      write: (message) => {
+        this.logger.info(message);
       },
-    }
-    return morgan('combined', { stream: loggerStream })
+    };
+    return morgan('combined', { stream: loggerStream });
   }
 }

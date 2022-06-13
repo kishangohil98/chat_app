@@ -1,10 +1,12 @@
-import { injectable } from 'inversify'
-import { Logger, createLogger, transports, format } from 'winston'
-import { ILogger } from './ILogger'
+import { injectable } from 'inversify';
+import {
+  Logger, createLogger, transports, format,
+} from 'winston';
+import { ILogger } from './ILogger';
 
 @injectable()
 export class WinstonLogger implements ILogger {
-  public readonly logger: Logger
+  public readonly logger: Logger;
 
   constructor() {
     this.logger = createLogger({
@@ -12,26 +14,23 @@ export class WinstonLogger implements ILogger {
         new transports.Console({
           level: 'debug',
           handleExceptions: true,
-          format: format.combine(
-            format.timestamp(),
-            format.prettyPrint({ colorize: true })
-          ),
+          format: format.combine(format.timestamp(), format.prettyPrint({ colorize: true })),
         }),
       ],
       exitOnError: false,
-    })
+    });
   }
 
   public debug(message: string, metaData?: object) {
-    this.logger.debug(message, metaData)
+    this.logger.debug(message, metaData);
   }
 
   public info(message: string, metaData?: object) {
-    this.logger.info(message, metaData)
+    this.logger.info(message, metaData);
   }
 
   public error(message: string, metaData?: object) {
-    this.logger.error(message, metaData)
+    this.logger.error(message, metaData);
   }
 }
 

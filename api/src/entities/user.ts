@@ -1,16 +1,8 @@
-import * as Mongoose from 'mongoose'
-import { UserRepository } from '../repositories/UserRepository'
-import { winstonLogger } from '../common/logger/WinstonLogger'
-export interface IUser extends Mongoose.Document {
-  _id: string
-  email: string
-  password: string
-  accessToken?: string
-  refreshToken?: string
-  avatar?: string
-  createdAt: Date
-  updatedAt: Date
-}
+import * as Mongoose from 'mongoose';
+import { winstonLogger } from '../common/logger/WinstonLogger';
+import { IUser } from './interfaces/IUser';
+// eslint-disable-next-line import/no-cycle
+import { generateUserTokens } from '../common/helpers/GenerateToken';
 
 const userSchema: Mongoose.Schema = new Mongoose.Schema(
   {
@@ -50,21 +42,20 @@ const userSchema: Mongoose.Schema = new Mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 ).pre('save', async function <IUser>(next) {
-  winstonLogger.info(`Running Pre Save hook of Mongoose with User: ${this}`)
+  winstonLogger.info(`Running Pre Save hook of Mongoose with User: ${this}`);
 
   if (this.isNew) {
-    const { accessToken, refreshToken } =
-      await UserRepository.generateUserTokens(this)
-    this.set('accessToken', accessToken)
-    this.set('refreshToken', refreshToken)
+    const { accessToken, refreshToken } = await generateUserTokens(this);
+    this.set('accessToken', accessToken);
+    this.set('refreshToken', refreshToken);
     winstonLogger.info(
-      `Updating access and refresh token of User in Pre Save hook with User: ${this}`
-    )
+      `Updating access and refresh token of User in Pre Save hook with User: ${this}`,
+    );
   }
 
-  next()
-})
+  next();
+});
 
-export const User = Mongoose.model<IUser>('User', userSchema, 'user')
+export const User = Mongoose.model<IUser>('User', userSchema, 'user');

@@ -1,31 +1,25 @@
-import { IUser } from '../../entities/user'
-import { IGroup } from '../../entities/Group'
-import { IUserRegistrationSchema } from '../../controllers/UserController/UserRegistrationValidationMiddleware'
-
+// eslint-disable-next-line import/no-cycle
+import { IUser } from '../../entities/interfaces/IUser';
+import { IGroup } from '../../entities/Group';
+import { IUserRegistrationSchema } from '../../controllers/UserController/UserRegistrationValidationMiddleware';
 
 export interface IUserPayload {
-  user: IUser
+  user: IUser;
 }
 export interface IUserRepository {
-  registerUser(body: IUserRegistrationSchema): Promise<IUser>
+  registerUser(body: IUserRegistrationSchema): Promise<IUser>;
 
-  getUser(id: string): Promise<IUser | null>
-  
-  getAllUsers(): Promise<IUser[]>
+  getUser(id: string): Promise<IUser | null>;
 
-  login({
-    email,
-    password,
-  }: {
-    email: string
-    password: string
-  }): Promise<IUser>
+  getAllUsers(): Promise<IUser[]>;
 
-  getListOfUsers(user: IUser): Promise<IUser[]>
+  login({ email, password }: { email: string; password: string }): Promise<IUser>;
 
-  addUserToGroup(user: IUser, userId: string): Promise<void>
+  getListOfUsers(user: IUser): Promise<IUser[]>;
 
-  getListOfGroup(user: IUser): Promise<IGroup[]>
+  addUserToGroup(user: IUser, userId: string): Promise<void>;
 
-  getNewGroup(user: IUser): Promise<IGroup[]>
+  getListOfGroup(user: IUser): Promise<IGroup[]>;
+
+  getNewGroup(user: IUser): Promise<IGroup[]>;
 }

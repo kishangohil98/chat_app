@@ -1,9 +1,9 @@
-import { ILogger } from '../common/logger/ILogger'
-import * as express from 'express'
-import * as Joi from 'joi'
-import { expressCb } from './expressCb'
-import { injectable, inject, unmanaged } from 'inversify'
-import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
+import * as express from 'express';
+import * as Joi from 'joi';
+import { injectable, inject, unmanaged } from 'inversify';
+import { expressCb } from './expressCb';
+import { ILogger } from '../common/logger/ILogger';
+import { INVERSIFY_TYPES } from '../inversify/inversifyTypes';
 
 @injectable()
 export abstract class ValidationMiddleware<TBodyType> {
@@ -11,7 +11,7 @@ export abstract class ValidationMiddleware<TBodyType> {
     @inject(INVERSIFY_TYPES.Logger)
     private logger: ILogger,
     @unmanaged()
-    private validationSchema: Joi.ObjectSchema
+    private validationSchema: Joi.ObjectSchema,
   ) {}
 
   /**
@@ -23,21 +23,21 @@ export abstract class ValidationMiddleware<TBodyType> {
     return (
       request: express.Request,
       response: express.Response,
-      next: express.NextFunction
+      next: express.NextFunction,
     ): void => {
       // Validating incoming request body
       const validation: Joi.ValidationResult = this.validationSchema.validate(
-        request.body
-      )
+        request.body,
+      );
 
       if (validation.error) {
-        this.logger.error('Request body validation failed')
-        response.status(400).json(validation.error.details)
-        return
+        this.logger.error('Request body validation failed');
+        response.status(400).json(validation.error.details);
+        return;
       }
 
-      this.logger.info('Request body validation suceessful')
-      next()
-    }
+      this.logger.info('Request body validation suceessful');
+      next();
+    };
   }
 }

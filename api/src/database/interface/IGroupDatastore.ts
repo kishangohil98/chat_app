@@ -1,5 +1,5 @@
-import { IGroup } from '../../entities/Group'
+import { IGroup } from '../../entities/Group';
 
 export interface IGroupDatastore {
-  addGroup(group: IGroup): Promise<void>
+  addGroup(group: IGroup): Promise<void>;
 }

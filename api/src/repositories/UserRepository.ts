@@ -1,18 +1,15 @@
-import {
-  IUserRepository,
-  IUserPayload,
-} from './interface/IUserRepository'
-import { inject, injectable } from 'inversify'
-import { IUserDatastore } from '../database/interface/IUserDatastore'
-import { IGroupDatastore } from '../database/interface/IGroupDatastore'
-import { INVERSIFY_TYPES } from '../inversify/inversifyTypes'
-import { IUserRegistrationSchema } from '../controllers/UserController/UserRegistrationValidationMiddleware'
-import * as JWT from 'jsonwebtoken'
-import { IUser, User } from '../entities/user'
-import { Group, IGroup, GroupType } from '../entities/Group'
-import { NotFoundException } from '../common/exceptions/NotFoundException'
-import * as Mongoose from 'mongoose'
-import { config } from '../../config'
+import { inject, injectable } from 'inversify';
+import * as Mongoose from 'mongoose';
+import { IUserRepository } from './interface/IUserRepository';
+import { IUserDatastore } from '../database/interface/IUserDatastore';
+import { IGroupDatastore } from '../database/interface/IGroupDatastore';
+import { INVERSIFY_TYPES } from '../inversify/inversifyTypes';
+import { IUserRegistrationSchema } from '../controllers/UserController/UserRegistrationValidationMiddleware';
+import { User } from '../entities/User';
+import { IUser } from '../entities/interfaces/IUser';
+import { Group, IGroup, GroupType } from '../entities/Group';
+import { NotFoundException } from '../common/exceptions/NotFoundException';
+import { generateUserTokens } from '../common/helpers/GenerateToken';
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -20,50 +17,45 @@ export class UserRepository implements IUserRepository {
     @inject(INVERSIFY_TYPES.UserDatastore)
     private userDatastore: IUserDatastore,
     @inject(INVERSIFY_TYPES.GroupDatastore)
-    private groupDatastore: IGroupDatastore
+    private groupDatastore: IGroupDatastore,
   ) {}
-  public async registerUser(
-    body: IUserRegistrationSchema
-  ): Promise<IUser> {
-    return this.userDatastore.addUser(body)
 
+  public async registerUser(body: IUserRegistrationSchema): Promise<IUser> {
+    return this.userDatastore.addUser(body);
   }
 
   public async getUser(id: string): Promise<IUser | null> {
-    const user = await User.findById(id)
+    const user = await User.findById(id);
 
-    return user
+    return user;
   }
 
   /**
    * To get all users in the DB
    */
-   public async getAllUsers(): Promise<IUser[]> {
+  public async getAllUsers(): Promise<IUser[]> {
     return User.find();
   }
 
-  public async login({
-    email,
-    password,
-  }: {
-    email: string
-    password: string
-  }): Promise<IUser> {
-    const user = await this.userDatastore.login({ email, password })
+  public async login({ email, password }: { email: string; password: string }): Promise<IUser> {
+    const user = await this.userDatastore.login({ email, password });
     if (!user) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException('User not found');
     }
 
-    const { accessToken, refreshToken } = await UserRepository.generateUserTokens(user)
+    const { accessToken, refreshToken } = await generateUserTokens(user);
 
-    await User.updateOne({
-      _id: user.id
-    }, {
-      $set: {
-        accessToken,
-        refreshToken
-      }
-    });
+    await User.updateOne(
+      {
+        _id: user.id,
+      },
+      {
+        $set: {
+          accessToken,
+          refreshToken,
+        },
+      },
+    );
 
     const userWithUpdatedToken = await User.findById(user.id);
     if (!userWithUpdatedToken) {
@@ -74,7 +66,7 @@ export class UserRepository implements IUserRepository {
   }
 
   public async getListOfUsers(user: IUser): Promise<IUser[]> {
-    return []
+    return [];
   }
 
   /**
@@ -84,33 +76,27 @@ export class UserRepository implements IUserRepository {
    * @returns
    */
   public async addUserToGroup(user: IUser, userId: string): Promise<void> {
-    const findUser = await User.findById(userId)
+    const findUser = await User.findById(userId);
     if (!findUser) {
-      throw new NotFoundException('User not found', 'userId')
+      throw new NotFoundException('User not found', 'userId');
     }
 
     const groupData = await Group.findOne({
-      userIds: [
-        Mongoose.Types.ObjectId(user._id),
-        Mongoose.Types.ObjectId(userId),
-      ],
+      userIds: [Mongoose.Types.ObjectId(user._id), Mongoose.Types.ObjectId(userId)],
       type: GroupType.DM,
-    })
+    });
 
     if (groupData) {
-      return
+      return;
     }
 
-    const group = new Group()
+    const group = new Group();
 
-    group.userIds = [
-      Mongoose.Types.ObjectId(user._id),
-      Mongoose.Types.ObjectId(userId),
-    ]
-    group.type = GroupType.DM
-    group.createdBy = Mongoose.Types.ObjectId(user._id)
+    group.userIds = [Mongoose.Types.ObjectId(user._id), Mongoose.Types.ObjectId(userId)];
+    group.type = GroupType.DM;
+    group.createdBy = Mongoose.Types.ObjectId(user._id);
 
-    await this.groupDatastore.addGroup(group)
+    await this.groupDatastore.addGroup(group);
   }
 
   /**
@@ -123,7 +109,7 @@ export class UserRepository implements IUserRepository {
       userIds: user.id,
     })
       .populate('user')
-      .exec()
+      .exec();
   }
 
   /**
@@ -132,54 +118,54 @@ export class UserRepository implements IUserRepository {
    * @returns {Promise<IGroup[]}
    */
   public async getNewGroup(user: IUser): Promise<IGroup[]> {
-    return Group.find().where('userIds').nin([user.id]).populate('user').exec()
+    // eslint-disable-next-line newline-per-chained-call
+    return Group.find().where('userIds').nin([user.id]).populate('user').exec();
   }
 
+  // /**
+  //  * Generate JWT Access Token
+  //  * @param user
+  //  * @returns {Promise<string>}
+  //  */
+  // static async generateJWToken(user: IUser): Promise<string> {
+  //   const payload: IUserPayload = {
+  //     user,
+  //   };
 
-  /**
-   * Generate JWT Access Token
-   * @param user 
-   * @returns {Promise<string>}
-   */
-  static async generateJWToken(user: IUser): Promise<string> {
-    const payload: IUserPayload = {
-      user,
-    }
+  //   return JWT.sign(payload, config.JWT_SECRET_KEY, {
+  //     expiresIn: '1h',
+  //   });
+  // }
 
-    return JWT.sign(payload, config.JWT_SECRET_KEY, {
-      expiresIn: '1h',
-    })
-  }
+  // /**
+  //  * Generate JWT Refresh Token
+  //  * @param user
+  //  * @returns {Promise<string>}
+  //  */
+  // static async generateJWTRefreshToken(user: IUser): Promise<string> {
+  //   const payload: IUserPayload = {
+  //     user,
+  //   };
 
-  /**
-   * Generate JWT Refresh Token
-   * @param user 
-   * @returns {Promise<string>}
-   */
-  static async generateJWTRefreshToken(user: IUser): Promise<string> {
-    const payload: IUserPayload = {
-      user,
-    }
+  //   return JWT.sign(payload, config.JWT_REFRESH_SECRET_KEY, {
+  //     expiresIn: '1h',
+  //   });
+  // }
 
-    return JWT.sign(payload, config.JWT_REFRESH_SECRET_KEY, {
-      expiresIn: '1h',
-    })
-  }
+  // /**
+  //  * Generate both tokens
+  //  * @param user
+  //  */
+  // static async generateUserTokens(user: IUser): Promise<{
+  //   accessToken: string;
+  //   refreshToken: string;
+  // }> {
+  //   const accessToken = await UserRepository.generateJWToken(user);
+  //   const refreshToken = await UserRepository.generateJWTRefreshToken(user);
 
-  /**
-   * Generate both tokens
-   * @param user
-   */
-  static async generateUserTokens(user: IUser): Promise<{
-    accessToken: string;
-    refreshToken: string;
-  }> {
-    const accessToken = await UserRepository.generateJWToken(user);
-    const refreshToken = await this.generateJWTRefreshToken(user);
-
-    return {
-      accessToken,
-      refreshToken
-    };
-  }
+  //   return {
+  //     accessToken,
+  //     refreshToken,
+  //   };
+  // }
 }
