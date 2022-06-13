@@ -7,9 +7,8 @@
     "start": "ts-node ./index.ts",
     "start:dev": "concurrently \"nodemon\" \"npm start --prefix ../client\" --names Backend,Frontend",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "node_modules/.bin/tslint -c tslint.json 'src/**/*.ts'",
-    "prettier": "npm run prettier:base -- --write \"*.{ts,tsx}\" \"src/**/*.{ts,tsx}\"",
-    "format": "prettier \"{src,config}/**/*.ts\" --write"
+    "lint": "eslint src/***/**/*",
+    "lint:fix": "eslint src/***/**/* --fix"
   },
   "repository": {
     "type": "git",

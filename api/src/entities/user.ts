@@ -1,7 +1,6 @@
 import * as Mongoose from 'mongoose';
 import { winstonLogger } from '../common/logger/WinstonLogger';
 import { IUser } from './interfaces/IUser';
-// eslint-disable-next-line import/no-cycle
 import { generateUserTokens } from '../common/helpers/GenerateToken';
 
 const userSchema: Mongoose.Schema = new Mongoose.Schema(
