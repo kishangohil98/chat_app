@@ -35,15 +35,8 @@ export class Server {
   private initializeMiddleware() {
     const corsOptions = {
       origin: config.CORS_ORIGIN,
-      methods: [
-        'GET',
-        'POST',
-        'PUT',
-        'DELETE',
-      ],
-      allowedHeaders: [
-        'Content-Type',
-      ],
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      allowedHeaders: ['Content-Type', 'token'],
     };
     this.app.use(express.json());
     this.app.use(cors(corsOptions));

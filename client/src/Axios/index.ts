@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { config } from '../Config';
 
 const axiosInstance = axios.create({
@@ -7,7 +7,13 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   // Do something before request is sent
-  (configuration) => configuration,
+  // eslint-disable-next-line arrow-body-style
+  (configuration: AxiosRequestConfig<any>) => {
+    if (configuration.headers) {
+      configuration.headers.token = localStorage.getItem('access-token') ?? '';
+    }
+    return configuration;
+  },
   // Do something with request error
   (error) => Promise.reject(error),
 );

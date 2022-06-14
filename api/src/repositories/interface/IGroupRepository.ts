@@ -1,9 +1,7 @@
-import { IGroup } from '../../entities/Group';
 import { IUser } from '../../entities/interfaces/IUser';
+import { IGroup } from '../../entities/Group';
 
-export interface IGroupDatastore {
-  addGroup(group: IGroup): Promise<void>;
-
+export interface IGroupRepository {
   getAllGroups(): Promise<IGroup[]>;
 
   getGroupsOfUser(user: IUser): Promise<IGroup[]>;

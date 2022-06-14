@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-cycle
 import { IUser } from '../../entities/interfaces/IUser';
 import { IGroup } from '../../entities/Group';
 import { IUserRegistrationSchema } from '../../controllers/UserController/UserRegistrationValidationMiddleware';

@@ -92,7 +92,7 @@ export class UserRepository implements IUserRepository {
 
     const group = new Group();
 
-    group.userIds = [Mongoose.Types.ObjectId(user._id), Mongoose.Types.ObjectId(userId)];
+    group.users = [Mongoose.Types.ObjectId(user._id), Mongoose.Types.ObjectId(userId)];
     group.type = GroupType.DM;
     group.createdBy = Mongoose.Types.ObjectId(user._id);
 

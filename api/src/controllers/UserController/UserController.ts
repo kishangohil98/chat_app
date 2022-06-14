@@ -52,7 +52,7 @@ export class UserController implements IRouterController {
     );
 
     this.router.get(
-      `${this.path}/group`,
+      `${this.path}/groups`,
       this.authenticationMiddleware.handler(),
       this.getListOfGroup,
     );
@@ -153,7 +153,7 @@ export class UserController implements IRouterController {
       if (!request.body.userId) {
         throw new BadRequestException('User id is required');
       }
-      const user = await this.userRepository.getUser(request.body._payload?.user?._id);
+      const user = this.authenticationMiddleware.getUserPrinciple(request);
       if (!user) {
         return response.status(403).json({
           message: 'Authentication failed, User not found',

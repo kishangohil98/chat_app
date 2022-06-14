@@ -6,19 +6,19 @@ export enum GroupType {
 }
 
 export interface IGroup extends Mongoose.Document {
-  _id: string
-  userIds: Mongoose.Types.ObjectId[]
-  type: GroupType
-  groupName?: string
-  avatar?: string
-  createdBy: Mongoose.Types.ObjectId
-  createdAt: Date
-  updatedAt: Date
+  _id: string;
+  users: Mongoose.Types.ObjectId[];
+  type: GroupType;
+  groupName?: string;
+  avatar?: string;
+  createdBy: Mongoose.Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const groupSchema: Mongoose.Schema = new Mongoose.Schema(
   {
-    userIds: [
+    users: [
       {
         type: Mongoose.Schema.Types.ObjectId,
         ref: 'User',

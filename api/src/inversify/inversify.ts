@@ -8,11 +8,15 @@ import { IGroupDatastore } from '../database/interface/IGroupDatastore';
 // Repositories
 import { IUserRepository } from '../repositories/interface/IUserRepository';
 import { UserRepository } from '../repositories/UserRepository';
+
+import { IGroupRepository } from '../repositories/interface/IGroupRepository';
+import { GroupRepository } from '../repositories/GroupRepository';
 import { INVERSIFY_TYPES } from './inversifyTypes';
 
 // Controllers
 import { IRouterController } from '../controllers/IRouterController';
 import { UserController } from '../controllers/UserController/UserController';
+import { GroupController } from '../controllers/GroupController/GroupController';
 import { Server } from '../server/server';
 import { ILogger } from '../common/logger/ILogger';
 import { WinstonLogger } from '../common/logger/WinstonLogger';
@@ -28,37 +32,27 @@ import { ErrorMiddleware } from '../middlerware/ErrorMiddleware';
  */
 export function initialiseRepositories(container: Container): Container {
   // Datastore
-  container
-    .bind<IUserRepository>(INVERSIFY_TYPES.UserRepository)
-    .to(UserRepository);
+  container.bind<IUserRepository>(INVERSIFY_TYPES.UserRepository).to(UserRepository);
+  container.bind<IGroupRepository>(INVERSIFY_TYPES.GroupRepository).to(GroupRepository);
   return container;
 }
 
 export function initialiseDatastore(container: Container): Container {
   // Repository
-  container
-    .bind<IUserDatastore>(INVERSIFY_TYPES.UserDatastore)
-    .to(UserDatastore);
-  container
-    .bind<IGroupDatastore>(INVERSIFY_TYPES.GroupDatastore)
-    .to(GroupDatastore);
+  container.bind<IUserDatastore>(INVERSIFY_TYPES.UserDatastore).to(UserDatastore);
+  container.bind<IGroupDatastore>(INVERSIFY_TYPES.GroupDatastore).to(GroupDatastore);
   return container;
 }
 
 export function initialiseServer(inversifyContainer: Container): Container {
   // User Controller
-  inversifyContainer
-    .bind<IRouterController>(INVERSIFY_TYPES.Controller)
-    .to(UserController);
+  inversifyContainer.bind<IRouterController>(INVERSIFY_TYPES.Controller).to(UserController);
+  // User Controller
+  inversifyContainer.bind<IRouterController>(INVERSIFY_TYPES.Controller).to(GroupController);
   // Server
-  inversifyContainer
-    .bind<Server>(INVERSIFY_TYPES.Server)
-    .to(Server)
-    .inSingletonScope();
+  inversifyContainer.bind<Server>(INVERSIFY_TYPES.Server).to(Server).inSingletonScope();
   // Logger middleware
-  inversifyContainer
-    .bind<LoggerMiddleware>(INVERSIFY_TYPES.LoggerMiddleware)
-    .to(LoggerMiddleware);
+  inversifyContainer.bind<LoggerMiddleware>(INVERSIFY_TYPES.LoggerMiddleware).to(LoggerMiddleware);
 
   // Validation Middleware
   inversifyContainer
@@ -72,17 +66,12 @@ export function initialiseServer(inversifyContainer: Container): Container {
     .bind<AuthenticationMiddleware>(INVERSIFY_TYPES.AuthenticationMiddleware)
     .to(AuthenticationMiddleware);
 
-  inversifyContainer
-    .bind<ErrorMiddleware>(INVERSIFY_TYPES.ErrorMiddleware)
-    .to(ErrorMiddleware);
+  inversifyContainer.bind<ErrorMiddleware>(INVERSIFY_TYPES.ErrorMiddleware).to(ErrorMiddleware);
 
   return inversifyContainer;
 }
 
 export function initialiseLogger(inversifyContainer: Container): Container {
-  inversifyContainer
-    .bind<ILogger>(INVERSIFY_TYPES.Logger)
-    .to(WinstonLogger)
-    .inSingletonScope();
+  inversifyContainer.bind<ILogger>(INVERSIFY_TYPES.Logger).to(WinstonLogger).inSingletonScope();
   return inversifyContainer;
 }
