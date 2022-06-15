@@ -42,6 +42,7 @@ export class AuthenticationMiddleware {
           response.status(403).json({
             message: 'Authentication failed, Invalid token',
           });
+          return;
         }
 
         const user = await this.userRepository.getUser(payload?.user?._id);
@@ -50,6 +51,7 @@ export class AuthenticationMiddleware {
           response.status(403).json({
             message: 'Authentication failed, User not found',
           });
+          return;
         }
 
         this.logger.info('Authentication successful', payload);

@@ -14,7 +14,7 @@ import {
 import { styled } from '@mui/material/styles';
 import { SearchComponent } from './Search';
 import { useAppDispath, useAppSelector } from '../../Store/hooks';
-import { getGroupName, changeGroupName } from '../../Store/slices/groupsSlice';
+import { getGroup } from '../../Store/slices/groupsSlice';
 import { fetchGroups } from '../../Store/services/groups';
 
 const ListBox = styled(Box)<BoxProps>(() => ({
@@ -24,24 +24,40 @@ const ListBox = styled(Box)<BoxProps>(() => ({
 
 function ListComponent() {
   const dispatch = useAppDispath();
-  const groupName = useAppSelector(getGroupName);
+  const groupState = useAppSelector(getGroup);
 
   useEffect(() => {
-    dispatch(changeGroupName('Kishan`s chat'));
     dispatch(fetchGroups());
   }, [dispatch]);
 
+  console.log('getGroup', groupState);
   return (
     <ListBox>
       <PerfectScrollbar>
         <List sx={{ p: 0 }}>
+          {groupState.groupData.map((data) => {
+            const user = 'test';
+            return (
+              <div key={data._id}>
+                <Divider variant="fullWidth" component="li" />
+                <ListItem disablePadding>
+                  <ListItemButton alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar alt="Remy Sharp" src="" />
+                    </ListItemAvatar>
+                    <ListItemText primary="Test" secondary="Ali Connors dummy text" />
+                  </ListItemButton>
+                </ListItem>
+              </div>
+            );
+          })}
           <Divider variant="fullWidth" component="li" />
           <ListItem disablePadding>
             <ListItemButton alignItems="flex-start">
               <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src="" />
               </ListItemAvatar>
-              <ListItemText primary={groupName} secondary="Ali Connors dummy text" />
+              <ListItemText primary="Test" secondary="Ali Connors dummy text" />
             </ListItemButton>
           </ListItem>
           <Divider variant="fullWidth" component="li" />
@@ -50,16 +66,7 @@ function ListComponent() {
               <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src="" />
               </ListItemAvatar>
-              <ListItemText primary={groupName} secondary="Ali Connors dummy text" />
-            </ListItemButton>
-          </ListItem>
-          <Divider variant="fullWidth" component="li" />
-          <ListItem disablePadding>
-            <ListItemButton alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src="" />
-              </ListItemAvatar>
-              <ListItemText primary={groupName} secondary="Ali Connors dummy text" />
+              <ListItemText primary="Test" secondary="Ali Connors dummy text" />
             </ListItemButton>
           </ListItem>
           <Divider variant="fullWidth" component="li" />

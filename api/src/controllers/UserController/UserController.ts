@@ -124,8 +124,8 @@ export class UserController implements IRouterController {
     next: express.NextFunction,
   ) => {
     try {
-      response.send('asdas');
-      await this.userRepository.getUser('');
+      const user = this.authenticationMiddleware.getUserPrinciple(request);
+      response.status(200).json(user);
     } catch (error) {
       next(error);
     }

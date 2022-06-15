@@ -2,37 +2,49 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { fetchGroups } from '../services/groups';
 import { Loading } from '../common';
+import { Group } from '../../Models/Group';
 
 type GroupState = {
-  id: string;
-  name: string;
+  groupData: Group[];
   loading: Loading;
+  error: any;
 };
 
 const initialState: GroupState = {
-  id: 'test',
-  name: 'Group1',
+  groupData: [],
   loading: Loading.Idle,
+  error: undefined,
 };
 export const groupsSlice = createSlice({
   name: 'groups',
   initialState,
   reducers: {
-    changeGroupName: (state, action: PayloadAction<string>) => {
-      state.name = action.payload || 'Group2';
+    changeGroupData: (state, action: PayloadAction<Group[]>) => {
+      state.groupData = action.payload;
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchGroups.pending, (state) => ({ ...state, name: 'api-loading' }))
-      .addCase(fetchGroups.fulfilled, (state) => ({ ...state, name: 'from-api' }))
-      .addCase(fetchGroups.rejected, (state) => ({ ...state, name: 'api-error' }));
+    builder.addCase(fetchGroups.pending, (state) => ({
+      ...state,
+      groupData: [],
+      loading: Loading.Pending,
+    }));
+    builder.addCase(fetchGroups.fulfilled, (state, action) => ({
+      ...state,
+      groupData: action.payload,
+      loading: Loading.Succeeded,
+    }));
+    builder.addCase(fetchGroups.rejected, (state, action) => ({
+      ...state,
+      error: action.payload,
+      loading: Loading.Failed,
+    }));
   },
 });
 
 const groupsReducer = groupsSlice.reducer;
 
-export const { changeGroupName } = groupsSlice.actions;
-export const getGroupName = (state: RootState) => state.groups.name;
+export const { changeGroupData } = groupsSlice.actions;
+export const getGroup = (state: RootState) => state.groups;
 
 export default groupsReducer;

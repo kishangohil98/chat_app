@@ -43,8 +43,12 @@ export const generateUserTokens = async (
   accessToken: string;
   refreshToken: string;
 }> => {
-  const accessToken = await generateJWToken(user);
-  const refreshToken = await generateJWTRefreshToken(user);
+  const payload = user;
+  payload.accessToken = undefined;
+  payload.refreshToken = undefined;
+
+  const accessToken = await generateJWToken(payload);
+  const refreshToken = await generateJWTRefreshToken(payload);
 
   return {
     accessToken,
