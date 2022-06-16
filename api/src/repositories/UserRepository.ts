@@ -43,26 +43,7 @@ export class UserRepository implements IUserRepository {
       throw new NotFoundException('User not found');
     }
 
-    const { accessToken, refreshToken } = await generateUserTokens(user);
-
-    await User.updateOne(
-      {
-        _id: user.id,
-      },
-      {
-        $set: {
-          accessToken,
-          refreshToken,
-        },
-      },
-    );
-
-    const userWithUpdatedToken = await User.findById(user.id);
-    if (!userWithUpdatedToken) {
-      throw new NotFoundException('User with tokens not found');
-    }
-
-    return userWithUpdatedToken;
+    return this.updateUserTokens(user);
   }
 
   public async getListOfUsers(user: IUser): Promise<IUser[]> {
@@ -120,5 +101,27 @@ export class UserRepository implements IUserRepository {
   public async getNewGroup(user: IUser): Promise<IGroup[]> {
     // eslint-disable-next-line newline-per-chained-call
     return Group.find().where('userIds').nin([user.id]).populate('user').exec();
+  }
+
+  public async updateUserTokens(user: IUser): Promise<IUser> {
+    const { accessToken, refreshToken } = await generateUserTokens(user);
+
+    await User.updateOne(
+      {
+        _id: user.id,
+      },
+      {
+        $set: {
+          accessToken,
+          refreshToken,
+        },
+      },
+    );
+
+    const userWithUpdatedToken = await User.findById(user.id);
+    if (!userWithUpdatedToken) {
+      throw new NotFoundException('User with tokens not found');
+    }
+    return userWithUpdatedToken;
   }
 }

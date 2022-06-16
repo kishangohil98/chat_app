@@ -3,7 +3,7 @@ import { injectable, inject } from 'inversify';
 import { IUserRepository } from '../../repositories/interface/IUserRepository';
 import { INVERSIFY_TYPES } from '../../inversify/inversifyTypes';
 import { IRouterController } from '../IRouterController';
-import { EMAIL_ALREADY_REGISTERED } from '../../common/errorMessages';
+import { EMAIL_ALREADY_REGISTERED } from '../../common/contants/ErrorMessages';
 import { UserRegistrationValidationMiddleware } from './UserRegistrationValidationMiddleware';
 import { AuthenticationMiddleware } from '../../middlerware/AuthenticationMiddleware';
 import { BadRequestException } from '../../common/exceptions/BadRequestException';
@@ -33,6 +33,12 @@ export class UserController implements IRouterController {
       `${this.path}/register`,
       this.userRegistrationValidationMiddleware.handler(),
       this.registerUser,
+    );
+
+    this.router.get(
+      `${this.path}/refresh-token`,
+      this.authenticationMiddleware.validateRefreshToken(),
+      this.refreshToken,
     );
 
     this.router.post(`${this.path}/login`, this.login);
@@ -193,6 +199,21 @@ export class UserController implements IRouterController {
       const groups = await this.userRepository.getNewGroup(user);
 
       response.json(groups);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  private refreshToken = async (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction,
+  ) => {
+    try {
+      const user = this.authenticationMiddleware.getUserPrinciple(request);
+
+      const updatedUser = await this.userRepository.updateUserTokens(user);
+      response.json(updatedUser);
     } catch (error) {
       next(error);
     }

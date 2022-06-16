@@ -47,6 +47,7 @@
         "no-underscore-dangle":  ["error", { "allow": ["_payload", "_id", "_user"] }],
         "class-methods-use-this": "warn",
         "no-useless-constructor": "off",
-        "space-before-function-paren": "off"
+        "space-before-function-paren": "off",
+        "operator-linebreak": [2, "after"]
     }
 }

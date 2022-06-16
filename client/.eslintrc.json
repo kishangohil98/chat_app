@@ -47,6 +47,7 @@
             { "allow": ["error"] }
         ],
         "no-param-reassign": [2, { "props": false }],
-        "no-underscore-dangle":  ["error", { "allow": ["_id"] }]
+        "no-underscore-dangle":  ["error", { "allow": ["_id"] }],
+        "operator-linebreak": [2, "after"]
     }
 }

@@ -21,4 +21,6 @@ export interface IUserRepository {
   getListOfGroup(user: IUser): Promise<IGroup[]>;
 
   getNewGroup(user: IUser): Promise<IGroup[]>;
+
+  updateUserTokens(user: IUser): Promise<IUser>;
 }

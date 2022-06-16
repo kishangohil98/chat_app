@@ -36,7 +36,7 @@ export class Server {
     const corsOptions = {
       origin: config.CORS_ORIGIN,
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
-      allowedHeaders: ['Content-Type', 'token'],
+      allowedHeaders: ['Content-Type', 'token', 'refreshtoken'],
     };
     this.app.use(express.json());
     this.app.use(cors(corsOptions));
