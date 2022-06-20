@@ -10,8 +10,10 @@ import {
   DialogContent,
   DialogContentText,
   IconButton,
+  Grid,
+  TextField,
 } from '@mui/material';
-import { Search, Close } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 
@@ -38,8 +40,8 @@ export function SearchComponent() {
 
   const handleKeyPress = useCallback(
     (event) => {
-      event.preventDefault();
       if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
         setOpen(!open);
       }
     },
@@ -60,21 +62,34 @@ export function SearchComponent() {
           p: 1,
         }}
       >
-        <StyledButton variant="text" startIcon={<Search />} onClick={handleClickOpen}>
-          Search
-          <Typography
-            component="span"
-            sx={{
-              fontSize: '12px',
-              backgroundColor: 'common.white',
-              padding: '0 8px',
-              borderRadius: '6px',
-              marginLeft: '16px',
-            }}
-          >
-            Ctrl + K
-          </Typography>
-        </StyledButton>
+        <Grid container spacing={1}>
+          <Grid item xs={8}>
+            <TextField
+              id="search-bar"
+              size="small"
+              fullWidth
+              defaultValue=""
+              placeholder="Search"
+            />
+          </Grid>
+          <Grid item xs={4} component="div">
+            <StyledButton variant="text" onClick={handleClickOpen}>
+              Join DM
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: '10px',
+                  backgroundColor: 'common.white',
+                  padding: '0 6px',
+                  borderRadius: '6px',
+                  marginLeft: '16px',
+                }}
+              >
+                Ctrl + K
+              </Typography>
+            </StyledButton>
+          </Grid>
+        </Grid>
       </Box>
       <Dialog
         // fullScreen={fullScreen}
