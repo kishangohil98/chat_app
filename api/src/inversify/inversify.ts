@@ -22,6 +22,7 @@ import { ILogger } from '../common/logger/ILogger';
 import { WinstonLogger } from '../common/logger/WinstonLogger';
 import { LoggerMiddleware } from '../middlerware/LoggerMiddleware';
 import { UserRegistrationValidationMiddleware } from '../controllers/UserController/UserRegistrationValidationMiddleware';
+import { JoinGroupValidationMiddleware } from '../controllers/GroupController/JoinGroupValidationMiddleware';
 import { AuthenticationMiddleware } from '../middlerware/AuthenticationMiddleware';
 import { ErrorMiddleware } from '../middlerware/ErrorMiddleware';
 
@@ -60,6 +61,9 @@ export function initialiseServer(inversifyContainer: Container): Container {
       INVERSIFY_TYPES.UserRegistrationValidationMiddleware,
     )
     .to(UserRegistrationValidationMiddleware);
+  inversifyContainer
+    .bind<JoinGroupValidationMiddleware>(INVERSIFY_TYPES.JoinGroupValidationMiddleware)
+    .to(JoinGroupValidationMiddleware);
 
   // Authentication Middleware
   inversifyContainer

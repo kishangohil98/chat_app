@@ -7,4 +7,8 @@ export interface IGroupDatastore {
   getAllGroups(): Promise<IGroup[]>;
 
   getGroupsOfUser(user: IUser): Promise<IGroup[]>;
+
+  getNewGroups(user: IUser): Promise<IGroup[]>;
+
+  getUserDmList(user: IUser): Promise<IGroup[]>;
 }

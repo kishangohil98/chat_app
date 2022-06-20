@@ -5,4 +5,9 @@ export interface IGroupRepository {
   getAllGroups(): Promise<IGroup[]>;
 
   getGroupsOfUser(user: IUser): Promise<IGroup[]>;
+
+  getNewGroups(user: IUser): Promise<{
+    users: IUser[];
+    groups: IGroup[];
+  }>;
 }

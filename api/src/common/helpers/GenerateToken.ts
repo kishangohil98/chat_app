@@ -14,7 +14,7 @@ const generateJWToken = async (user: IUser): Promise<string> => {
   };
 
   return JWT.sign(payload, config.JWT_SECRET_KEY, {
-    expiresIn: 10,
+    expiresIn: '1h',
   });
 };
 
