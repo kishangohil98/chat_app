@@ -60,6 +60,8 @@ export class AuthenticationMiddleware {
         }
 
         this.logger.info('Authentication successful', payload);
+        // TODO: store user's principle in headers with JSON.stringify
+        // and remove _user from request body validation
         request.body._user = user;
         next();
       });

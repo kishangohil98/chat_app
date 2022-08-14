@@ -4,7 +4,7 @@ import { IGroupDatastore } from '../database/interface/IGroupDatastore';
 import { INVERSIFY_TYPES } from '../inversify/inversifyTypes';
 import { IUser } from '../entities/interfaces/IUser';
 import { IGroup } from '../entities/Group';
-import { User } from '../entities/User';
+import { User } from '../entities/user';
 
 @injectable()
 export class GroupRepository implements IGroupRepository {
