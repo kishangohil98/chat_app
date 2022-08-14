@@ -14,6 +14,7 @@ export interface IGroup extends Mongoose.Document {
   createdBy: Mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
+  // NOTE: save last message updated field to get sorting of group list filter
 }
 
 const groupSchema: Mongoose.Schema = new Mongoose.Schema(
