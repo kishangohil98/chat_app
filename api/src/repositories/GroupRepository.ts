@@ -1,10 +1,12 @@
 import { inject, injectable } from 'inversify';
+import * as Mongoose from 'mongoose';
 import { IGroupRepository } from './interface/IGroupRepository';
 import { IGroupDatastore } from '../database/interface/IGroupDatastore';
 import { INVERSIFY_TYPES } from '../inversify/inversifyTypes';
 import { IUser } from '../entities/interfaces/IUser';
-import { IGroup } from '../entities/Group';
+import { Group, GroupType, IGroup } from '../entities/Group';
 import { User } from '../entities/User';
+import { IJoinGroupSchema } from '../controllers/GroupController/JoinGroupValidationMiddleware';
 
 @injectable()
 export class GroupRepository implements IGroupRepository {
@@ -33,6 +35,13 @@ export class GroupRepository implements IGroupRepository {
       users: newUsers,
       groups: newGroups,
     };
+  }
+
+  public async joinNewGroup(user: IUser, body: IJoinGroupSchema): Promise<void> {
+    if (body.groupType === GroupType.DM && body.userId) {
+      const group = new Group();
+      group.users = [Mongoose.Types.ObjectId(user._id), Mongoose.Types.ObjectId(body.userId)];
+    }
   }
 
   private async getNewDmUsers(user: IUser): Promise<IUser[]> {

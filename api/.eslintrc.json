@@ -48,7 +48,6 @@
         "class-methods-use-this": "warn",
         "no-useless-constructor": "off",
         "space-before-function-paren": "off",
-        "operator-linebreak": [2, "after"],
-        "linebreak-style": ["error", "windows"]
+        "operator-linebreak": [2, "after"]
     }
 }
