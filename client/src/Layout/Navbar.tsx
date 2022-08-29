@@ -99,7 +99,7 @@ export function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             size="large"
@@ -111,7 +111,7 @@ export function Navbar() {
             <MarkUnreadChatAltIcon />
           </IconButton>
           <Typography
-            variant="h6"
+            variant="body1"
             noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
