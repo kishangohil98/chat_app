@@ -63,7 +63,7 @@ export function SearchComponent() {
         }}
       >
         <Grid container spacing={1}>
-          <Grid item xs={8}>
+          <Grid item xs={6}>
             <TextField
               id="search-bar"
               size="small"
@@ -72,7 +72,7 @@ export function SearchComponent() {
               placeholder="Search"
             />
           </Grid>
-          <Grid item xs={4} component="div">
+          <Grid item xs={6} component="div">
             <StyledButton variant="text" onClick={handleClickOpen}>
               Join DM
               <Typography
