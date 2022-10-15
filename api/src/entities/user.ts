@@ -1,7 +1,18 @@
 import * as Mongoose from 'mongoose';
 import { winstonLogger } from '../common/logger/WinstonLogger';
-import { IUser } from './interfaces/IUser';
+// import { IUser } from './interfaces/IUser';
 import { generateUserTokens } from '../common/helpers/GenerateToken';
+
+export interface IUser extends Mongoose.Document {
+  _id: string;
+  email: string;
+  password: string;
+  accessToken?: string;
+  refreshToken?: string;
+  avatar?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const userSchema: Mongoose.Schema = new Mongoose.Schema(
   {
