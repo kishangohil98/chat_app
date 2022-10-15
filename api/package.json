@@ -6,9 +6,15 @@
   "scripts": {
     "start": "ts-node ./index.ts",
     "start:dev": "concurrently \"nodemon\" \"npm start --prefix ../client\" --names Backend,Frontend",
+    "build": "rimraf ./build && tsc",
+    "start:prod": "npm run build && node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/***/**/*",
     "lint:fix": "eslint src/***/**/* --fix"
+  },
+  "engines": {
+    "node": "16.15.1",
+    "npm": "8.11.0"
   },
   "repository": {
     "type": "git",
@@ -38,7 +44,7 @@
     "@types/crypto-js": "^4.0.2",
     "@types/express": "^4.17.12",
     "@types/jsonwebtoken": "^8.5.5",
-    "@types/node": "^16.0.0",
+    "@types/node": "^15.6.0",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "concurrently": "^7.2.0",
@@ -47,6 +53,7 @@
     "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.9",
     "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
     "ts-node": "^10.8.1",
     "typescript": "^4.3.5"
   }

@@ -9,7 +9,7 @@
     "resolveJsonModule": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": ".build",
+    "outDir": "build",
     "lib": ["es6"],
     "rootDir": "./",
     "paths": {
