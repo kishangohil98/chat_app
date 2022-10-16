@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import * as cryptoJs from 'crypto-js';
 import { IUserDatastore } from './interface/IUserDatastore';
-import { User } from '../entities/User';
+import { User } from '../entities/user';
 import { IUser } from '../entities/interfaces/IUser';
 import { IUserRegistrationSchema } from '../controllers/UserController/UserRegistrationValidationMiddleware';
 

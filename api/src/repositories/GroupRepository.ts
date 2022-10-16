@@ -5,7 +5,7 @@ import { IGroupDatastore } from '../database/interface/IGroupDatastore';
 import { INVERSIFY_TYPES } from '../inversify/inversifyTypes';
 import { IUser } from '../entities/interfaces/IUser';
 import { Group, GroupType, IGroup } from '../entities/Group';
-import { User } from '../entities/User';
+import { User } from '../entities/user';
 import { IJoinGroupSchema } from '../controllers/GroupController/JoinGroupValidationMiddleware';
 
 @injectable()

@@ -6,7 +6,7 @@ import { IGroupDatastore } from '../database/interface/IGroupDatastore';
 import { INVERSIFY_TYPES } from '../inversify/inversifyTypes';
 import { IUserRegistrationSchema } from '../controllers/UserController/UserRegistrationValidationMiddleware';
 import { IUser } from '../entities/interfaces/IUser';
-import { User } from '../entities/User';
+import { User } from '../entities/user';
 import { Group, IGroup, GroupType } from '../entities/Group';
 import { NotFoundException } from '../common/exceptions/NotFoundException';
 import { generateUserTokens } from '../common/helpers/GenerateToken';
