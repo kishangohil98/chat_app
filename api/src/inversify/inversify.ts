@@ -17,6 +17,7 @@ import { INVERSIFY_TYPES } from './inversifyTypes';
 import { IRouterController } from '../controllers/IRouterController';
 import { UserController } from '../controllers/UserController/UserController';
 import { GroupController } from '../controllers/GroupController/GroupController';
+import { IndexController } from '../controllers/IndexController/IndexController';
 import { Server } from '../server/server';
 import { ILogger } from '../common/logger/ILogger';
 import { WinstonLogger } from '../common/logger/WinstonLogger';
@@ -46,6 +47,7 @@ export function initialiseDatastore(container: Container): Container {
 }
 
 export function initialiseServer(inversifyContainer: Container): Container {
+  inversifyContainer.bind<IRouterController>(INVERSIFY_TYPES.Controller).to(IndexController);
   // User Controller
   inversifyContainer.bind<IRouterController>(INVERSIFY_TYPES.Controller).to(UserController);
   // User Controller
