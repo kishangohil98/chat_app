@@ -7,7 +7,7 @@
     "start": "ts-node ./index.ts",
     "start:dev": "concurrently \"nodemon\" \"npm start --prefix ../client\" --names Backend,Frontend",
     "build": "rimraf ./build && tsc",
-    "start:prod": "npm run build && node build/index.js",
+    "start:prod": "node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/***/**/*",
     "lint:fix": "eslint src/***/**/* --fix"
