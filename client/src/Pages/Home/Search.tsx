@@ -1,21 +1,8 @@
 import React, { useEffect, useCallback } from 'react';
-import {
-  Button,
-  ButtonProps,
-  Box,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  IconButton,
-  Grid,
-  TextField,
-} from '@mui/material';
-import { Close } from '@mui/icons-material';
+import { Button, ButtonProps, Box, Typography, Grid, TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
+import { JoinDmOrGroupModal } from './JoinDmOrGroupModal';
 
 const StyledButton = styled(Button)<ButtonProps>(() => ({
   textTransform: 'none',
@@ -63,7 +50,7 @@ export function SearchComponent() {
         }}
       >
         <Grid container spacing={1}>
-          <Grid item xs={6}>
+          <Grid item xs={8}>
             <TextField
               id="search-bar"
               size="small"
@@ -72,9 +59,9 @@ export function SearchComponent() {
               placeholder="Search"
             />
           </Grid>
-          <Grid item xs={6} component="div">
+          <Grid item xs={4} component="div">
             <StyledButton variant="text" onClick={handleClickOpen}>
-              Join DM
+              Join
               <Typography
                 component="span"
                 sx={{
@@ -91,36 +78,8 @@ export function SearchComponent() {
           </Grid>
         </Grid>
       </Box>
-      <Dialog
-        // fullScreen={fullScreen}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="responsive-dialog-title">
-          Search for Users Or Groups
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis quidem quam
-            molestias sapiente ut nam, recusandae sed maxime nostrum error vel inventore excepturi
-            vitae sunt atque, molestiae praesentium necessitatibus non.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions />
-      </Dialog>
+
+      <JoinDmOrGroupModal open={open} handleClose={handleClose} />
     </>
   );
 }

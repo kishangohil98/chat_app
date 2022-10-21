@@ -5,7 +5,7 @@ import { User } from '../../Models/User';
 import { Group } from '../../Models/Group';
 import { fetchNewGroups } from '../services/newGroups';
 
-type NewGroupsState = {
+export type NewGroupsState = {
   users: User[];
   groups: Group[];
   loading: Loading;

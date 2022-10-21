@@ -6,7 +6,8 @@
     "extends": [
         "plugin:react/recommended",
         "airbnb",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
     ],
     "settings": {
         "import/resolver": {
@@ -24,7 +25,8 @@
     "plugins": [
         "react",
         "@typescript-eslint",
-        "react-hooks"
+        "react-hooks",
+        "prettier"
     ],
     "rules": {
         "no-use-before-define": "off",
@@ -40,6 +42,12 @@
         ],
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
+        "react/function-component-definition": [
+            2,
+            {
+              "namedComponents": ["arrow-function", "function-declaration"]
+            }
+          ],
         "import/prefer-default-export": "off",
         "react/react-in-jsx-scope": "off",
         "no-console": [
@@ -48,6 +56,7 @@
         ],
         "no-param-reassign": [2, { "props": false }],
         "no-underscore-dangle":  ["error", { "allow": ["_id"] }],
-        "operator-linebreak": [2, "after"]
+        "operator-linebreak": [2, "after"],
+        "linebreak-style": 0
     }
 }
