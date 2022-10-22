@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify';
 import * as Mongoose from 'mongoose';
+import { BadRequestException } from '../common/exceptions/BadRequestException';
 import { IGroupRepository } from './interface/IGroupRepository';
 import { IGroupDatastore } from '../database/interface/IGroupDatastore';
 import { INVERSIFY_TYPES } from '../inversify/inversifyTypes';
@@ -37,11 +38,27 @@ export class GroupRepository implements IGroupRepository {
     };
   }
 
-  public async joinNewGroup(user: IUser, body: IJoinGroupSchema): Promise<void> {
+  public async joinNewGroup(user: IUser, body: IJoinGroupSchema): Promise<IGroup | undefined> {
     if (body.groupType === GroupType.DM && body.userId) {
-      const group = new Group();
-      group.users = [Mongoose.Types.ObjectId(user._id), Mongoose.Types.ObjectId(body.userId)];
+      // Check group is not in the DB
+      const group = await Group.findOne({
+        type: GroupType.DM,
+        users: {
+          $all: [user._id, body.userId],
+        },
+      });
+      if (group) {
+        throw new BadRequestException('DM alredy created, can not create');
+      }
+      const dmGroup = new Group({
+        users: [Mongoose.Types.ObjectId(user._id), Mongoose.Types.ObjectId(body.userId)],
+        type: GroupType.DM,
+        createdBy: Mongoose.Types.ObjectId(user._id),
+      });
+      const dmGroupObject = await dmGroup.save();
+      return dmGroupObject;
     }
+    return undefined;
   }
 
   private async getNewDmUsers(user: IUser): Promise<IUser[]> {

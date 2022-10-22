@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node ./index.ts",
+    "start:server": "nodemon",
     "start:dev": "concurrently \"nodemon\" \"npm start --prefix ../client\" --names Backend,Frontend",
     "build": "rimraf ./build && tsc",
     "start:prod": "node build/index.js",

@@ -12,5 +12,5 @@ export interface IGroupRepository {
     groups: IGroup[];
   }>;
 
-  joinNewGroup(user: IUser, body: IJoinGroupSchema): Promise<void>;
+  joinNewGroup(user: IUser, body: IJoinGroupSchema): Promise<IGroup | undefined>;
 }

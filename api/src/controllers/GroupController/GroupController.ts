@@ -78,8 +78,9 @@ export class GroupController implements IRouterController {
   ) => {
     try {
       const user = this.authenticationMiddleware.getUserPrinciple(request);
+      const res = await this.groupRepository.joinNewGroup(user, request.body);
 
-      response.status(200).json({});
+      response.status(200).json(res);
     } catch (error) {
       console.error(error);
       next(error);
