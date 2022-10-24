@@ -69,7 +69,8 @@ export class GroupRepository implements IGroupRepository {
       [],
     );
 
-    const dmUserIds: string[] = [];
+    const dmUserIds: string[] = [user._id];
+    // user._id in dmUserIds is to avoid DM with self initially
     connectedUsers.map((id) => {
       if (!dmUserIds.includes(id)) {
         dmUserIds.push(id);

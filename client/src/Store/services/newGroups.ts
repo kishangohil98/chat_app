@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '../../Axios/index';
-import { Group } from '../../Models/Group';
+import { Group, GroupType } from '../../Models/Group';
 import { User } from '../../Models/User';
 
 export const fetchNewGroups = createAsyncThunk('groups/fetchNewGroups', async () => {
@@ -10,3 +10,9 @@ export const fetchNewGroups = createAsyncThunk('groups/fetchNewGroups', async ()
   }>('group/new');
   return response.data;
 });
+
+export const joinNewDM = (userId: string) =>
+  axiosInstance.post<Group>('group/join', {
+    groupType: GroupType.DM,
+    userId,
+  });

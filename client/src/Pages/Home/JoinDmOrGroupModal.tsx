@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogActions,
@@ -15,62 +15,138 @@ import {
   Divider,
   Typography,
   Button,
+  Chip,
 } from '@mui/material';
-import { Close } from '@mui/icons-material';
+import UpdateIcon from '@mui/icons-material/Update';
+import { Close, Done } from '@mui/icons-material';
 import { TabPanel } from '../../Utils/CommonComponents/TabPanel';
-import { useAppSelector } from '../../Store/hooks';
+import { useAppDispath, useAppSelector } from '../../Store/hooks';
 import { NewGroupsState } from '../../Store/slices/newGroupsSlice';
+import { fetchNewGroups, joinNewDM } from '../../Store/services/newGroups';
+import { fetchGroupsAPI } from '../../Store/services/groups';
+import { changeGroupData } from '../../Store/slices/groupsSlice';
 
 const JoinDM = ({
   newChats,
-  joinDm,
+  refreshNew,
+  fetchGroupsData,
 }: {
   newChats: NewGroupsState;
-  joinDm: (userId: string) => void;
-}) => (
-  <>
-    {newChats.users.length === 0 && (
-      <Box
-        sx={{
-          py: 5,
-          pt: 8,
-        }}
-      >
-        <Typography
+  refreshNew: () => void;
+  fetchGroupsData: () => void;
+}) => {
+  const [loadingUserIds, setLoadingUserIds] = useState<string[]>([]);
+  const [errorState, setErrorState] = useState<{ [key: string]: string | undefined }>({});
+  const [joinedDmUserIds, setJoinedDmUserIds] = useState<string[]>([]);
+
+  const joinDmApi = async (userId: string) => {
+    try {
+      setLoadingUserIds((pre) => [...pre, userId]);
+      setErrorState((pre) => ({
+        ...pre,
+        [userId]: undefined,
+      }));
+      await joinNewDM(userId);
+      setJoinedDmUserIds((pre) => [...pre, userId]);
+      fetchGroupsData();
+    } catch (error: any) {
+      setErrorState((pre) => ({
+        ...pre,
+        [userId]: error?.response?.data?.[0]?.message ?? 'Something went wrong!',
+      }));
+    }
+    setLoadingUserIds((pre) => pre.filter((id) => id !== userId));
+  };
+  useEffect(
+    () => () => {
+      refreshNew();
+    },
+    [],
+  );
+
+  return (
+    <>
+      {newChats.users.length === 0 && (
+        <Box
           sx={{
-            textAlign: 'center',
+            py: 5,
+            pt: 8,
           }}
         >
-          No new Users availabe to join!
-        </Typography>
-      </Box>
-    )}
-    <Box
-      sx={{
-        mt: 2,
-      }}
-    >
-      {newChats.users.map((user) => (
-        <div key={user._id}>
-          <ListItem
-            disablePadding
-            secondaryAction={
-              <Button variant="outlined" onClick={() => joinDm(user._id)} size="small">
-                Join
-              </Button>
-            }
+          <Typography
+            sx={{
+              textAlign: 'center',
+            }}
           >
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="" />
-            </ListItemAvatar>
-            <ListItemText primary={`${user.firstName} ${user.lastName}`} secondary={user.email} />
-          </ListItem>
-          <Divider variant="fullWidth" light />
-        </div>
-      ))}
-    </Box>
-  </>
-);
+            No new Users availabe to join!
+          </Typography>
+        </Box>
+      )}
+      <Box
+        sx={{
+          mt: 2,
+        }}
+      >
+        {newChats.users.map((user) => {
+          const isLoading = loadingUserIds.includes(user._id);
+          const errorText = errorState[user._id];
+          const isJoined = joinedDmUserIds.includes(user._id);
+          return (
+            <div key={user._id}>
+              <ListItem
+                disablePadding
+                secondaryAction={
+                  isJoined ? (
+                    <Chip
+                      size="small"
+                      label="Joined"
+                      variant="outlined"
+                      icon={<Done />}
+                      color="success"
+                    />
+                  ) : (
+                    <Button
+                      disabled={isLoading}
+                      variant="outlined"
+                      onClick={() => joinDmApi(user._id)}
+                      size="small"
+                    >
+                      {isLoading ? <UpdateIcon /> : 'Join'}
+                    </Button>
+                  )
+                }
+                sx={
+                  errorText
+                    ? {
+                        border: '1px solid red',
+                        borderRadius: '5px',
+                      }
+                    : {}
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar alt="Remy Sharp" src="" sx={{ width: 30, height: 30 }} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <Typography variant="subtitle1">{`${user.firstName} ${user.lastName}`}</Typography>
+                  }
+                  secondary={<Typography variant="body2">{user.email}</Typography>}
+                />
+              </ListItem>
+              {errorText && (
+                <Typography variant="caption" color="red">
+                  {errorText}
+                </Typography>
+              )}
+              <Divider variant="fullWidth" light />
+            </div>
+          );
+        })}
+      </Box>
+    </>
+  );
+};
 
 const JoinGroup = ({ newChats }: { newChats: NewGroupsState }) => (
   <>
@@ -118,22 +194,29 @@ export function JoinDmOrGroupModal({
   handleClose: () => void;
 }) {
   const [value, setValue] = useState<number>(0);
-
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
+  const dispatch = useAppDispath();
   const newChats = useAppSelector((state) => state.newGroups);
 
-  const joinDm = (userId: string) => {
-    console.log('clicks', userId);
+  const refreshNew = () => {
+    dispatch(fetchNewGroups());
   };
+  const fetchGroupsData = async () => {
+    await fetchGroupsAPI()
+      .then(({ data }) => {
+        dispatch(changeGroupData(data));
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <Dialog
       fullWidth
       open={open}
       onClose={handleClose}
-      maxWidth="sm"
+      maxWidth="xs"
       aria-labelledby="responsive-dialog-title"
     >
       <DialogTitle id="responsive-dialog-title">
@@ -160,7 +243,7 @@ export function JoinDmOrGroupModal({
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <JoinDM newChats={newChats} joinDm={joinDm} />
+            <JoinDM newChats={newChats} refreshNew={refreshNew} fetchGroupsData={fetchGroupsData} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <JoinGroup newChats={newChats} />

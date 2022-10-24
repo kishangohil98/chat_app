@@ -12,7 +12,7 @@ export interface Group {
   type: GroupType;
   groupName?: string;
   avatar?: string;
-  createdBy: User;
+  createdBy: User | string;
   createdAt: Date;
   updatedAt: Date;
 }
