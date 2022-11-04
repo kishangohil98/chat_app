@@ -68,6 +68,12 @@ export class UserController implements IRouterController {
       this.authenticationMiddleware.handler(),
       this.getNewGroup,
     );
+
+    this.router.get(
+      `${this.path}/:userId`,
+      this.authenticationMiddleware.handler(),
+      this.getUserWithDetails,
+    );
   }
 
   private getAllUsers = async (
@@ -197,6 +203,20 @@ export class UserController implements IRouterController {
       const user = this.authenticationMiddleware.getUserPrinciple(request);
 
       const groups = await this.userRepository.getNewGroup(user);
+
+      response.json(groups);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  private getUserWithDetails = async (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction,
+  ) => {
+    try {
+      const groups = await this.userRepository.getUserWithDetails(request.params.userId);
 
       response.json(groups);
     } catch (error) {

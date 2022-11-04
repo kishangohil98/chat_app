@@ -124,4 +124,16 @@ export class UserRepository implements IUserRepository {
     }
     return userWithUpdatedToken;
   }
+
+  public async getUserWithDetails(userId: string): Promise<IUser | null> {
+    const user = await User.findById(userId, {
+      password: 0,
+      accessToken: 0,
+      refreshToken: 0,
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
 }

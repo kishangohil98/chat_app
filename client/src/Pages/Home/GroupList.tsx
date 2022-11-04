@@ -17,6 +17,7 @@ import { useAppDispath, useAppSelector } from '../../Store/hooks';
 import { getGroup } from '../../Store/slices/groupsSlice';
 import { fetchGroups } from '../../Store/services/groups';
 import { getUser } from '../../Store/slices/userSlice';
+import { fetchCurrentConversationUser } from '../../Store/services/currentConversation';
 
 const ListBox = styled(Box)<BoxProps>(() => ({
   // TODO: Below is the patch, think about some other way to use 100% height for the div
@@ -47,7 +48,10 @@ function ListComponent() {
             return (
               <div key={data._id}>
                 <Divider variant="fullWidth" component="li" />
-                <ListItem disablePadding>
+                <ListItem
+                  disablePadding
+                  onClick={() => dispatch(fetchCurrentConversationUser(chatUser._id))}
+                >
                   <ListItemButton alignItems="flex-start">
                     <ListItemAvatar>
                       <Avatar alt="Remy Sharp" src="" />

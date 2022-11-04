@@ -23,4 +23,6 @@ export interface IUserRepository {
   getNewGroup(user: IUser): Promise<IGroup[]>;
 
   updateUserTokens(user: IUser): Promise<IUser>;
+
+  getUserWithDetails(userId: string): Promise<IUser | null>;
 }
