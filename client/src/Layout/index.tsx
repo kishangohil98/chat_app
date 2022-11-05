@@ -10,7 +10,7 @@ export function withLayout<P>(Component: React.ComponentType<P>) {
         <Navbar />
         <Box
           sx={{
-            pt: '64px',
+            mt: '64px',
           }}
         >
           <Component {...(props as P)} />

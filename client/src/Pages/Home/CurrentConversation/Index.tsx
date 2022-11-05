@@ -1,7 +1,9 @@
-import { Avatar, Divider, Grid, Typography } from '@mui/material';
+import { Avatar, Divider, Grid, Typography, Box } from '@mui/material';
 import React from 'react';
 import { Loading } from '../../../Store/common';
 import { useAppDispath, useAppSelector } from '../../../Store/hooks';
+import { TopBar } from './TopBar';
+import { SendMessage } from './SendMessage';
 
 export const Index = () => {
   const dispatch = useAppDispath();
@@ -11,35 +13,19 @@ export const Index = () => {
     return <>loading</>;
   }
   if (currentConversation.loading === Loading.Idle) {
-    return null;
+    return <>Select current convresation</>;
   }
 
   return (
-    <div>
-      <Grid
-        container
-        flexDirection="row"
-        sx={{
-          height: '50px',
-          px: 2,
-        }}
-        alignItems="center"
-      >
-        <Grid item>
-          <Avatar sx={{ width: 30, height: 30 }}>{currentConversation.user?.firstName[0]}</Avatar>
-        </Grid>
-        <Grid item>
-          <Typography
-            variant="subtitle1"
-            sx={{
-              pl: 1,
-            }}
-          >
-            {currentConversation.user?.firstName} {currentConversation.user?.lastName}
-          </Typography>
-        </Grid>
+    <Grid height="100%" flexDirection="column" container>
+      <Grid item>
+        <TopBar currentConversation={currentConversation} />
+        <Divider />
       </Grid>
-      <Divider />
-    </div>
+      <Grid item flexGrow={1} />
+      <Grid item>
+        <SendMessage />
+      </Grid>
+    </Grid>
   );
 };

@@ -13,8 +13,22 @@ export function Home() {
   // const newGroups = useAppSelector((state) => state.newGroups);
 
   return (
-    <Grid container spacing={0}>
-      <Grid item xs={3}>
+    <Grid
+      container
+      spacing={0}
+      height="100%"
+      style={{
+        height: 'calc(100vh - 64px)',
+      }}
+    >
+      <Grid
+        item
+        xs={3}
+        sx={{
+          borderRight: '0.5px solid',
+          borderColor: 'divider',
+        }}
+      >
         <GroupList />
       </Grid>
       <Grid item xs={9}>

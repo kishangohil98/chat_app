@@ -19,11 +19,6 @@ import { fetchGroups } from '../../Store/services/groups';
 import { getUser } from '../../Store/slices/userSlice';
 import { fetchCurrentConversationUser } from '../../Store/services/currentConversation';
 
-const ListBox = styled(Box)<BoxProps>(() => ({
-  // TODO: Below is the patch, think about some other way to use 100% height for the div
-  height: 'calc(100vh - 64px)',
-}));
-
 function ListComponent() {
   const dispatch = useAppDispath();
   const groupState = useAppSelector(getGroup);
@@ -38,7 +33,11 @@ function ListComponent() {
   }
 
   return (
-    <ListBox>
+    <Box
+      style={{
+        height: 'calc(100vh - 124px)',
+      }}
+    >
       <PerfectScrollbar>
         <List sx={{ p: 0 }}>
           {groupState.groupData.map((data) => {
@@ -68,18 +67,13 @@ function ListComponent() {
           <Divider variant="fullWidth" component="li" />
         </List>
       </PerfectScrollbar>
-    </ListBox>
+    </Box>
   );
 }
 
 export function GroupList() {
   return (
-    <Box
-      sx={{
-        borderRight: '0.5px solid',
-        borderColor: 'divider',
-      }}
-    >
+    <Box>
       <SearchComponent />
       <ListComponent />
     </Box>
