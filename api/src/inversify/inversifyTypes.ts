@@ -6,6 +6,7 @@ export const INVERSIFY_TYPES = {
   // Service types
   UserRepository: Symbol.for('UserRepository'),
   GroupRepository: Symbol.for('GroupRepository'),
+  MessageRepository: Symbol.for('MessageRepository'),
   // Datastore types
   Database: Symbol.for('Database'),
   UserDatastore: Symbol.for('UserDatastore'),
@@ -15,6 +16,7 @@ export const INVERSIFY_TYPES = {
   LoggerMiddleware: Symbol.for('LoggerMiddleware'),
   UserRegistrationValidationMiddleware: Symbol.for('UserRegistrationValidationMiddleware'),
   JoinGroupValidationMiddleware: Symbol.for('JoinGroupValidationMiddleware'),
+  SendMessageValidationMiddleware: Symbol.for('SendMessageValidationMiddleware'),
   AuthenticationMiddleware: Symbol.for('AuthenticationMiddleware'),
   ErrorMiddleware: Symbol.for('ErrorMiddleware'),
 };

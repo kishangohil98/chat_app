@@ -11,6 +11,8 @@ import { UserRepository } from '../repositories/UserRepository';
 
 import { IGroupRepository } from '../repositories/interface/IGroupRepository';
 import { GroupRepository } from '../repositories/GroupRepository';
+import { IMessageRepository } from '../repositories/interface/IMessageRepository';
+import { MessageRepository } from '../repositories/MessageRepository';
 import { INVERSIFY_TYPES } from './inversifyTypes';
 
 // Controllers
@@ -24,8 +26,10 @@ import { WinstonLogger } from '../common/logger/WinstonLogger';
 import { LoggerMiddleware } from '../middlerware/LoggerMiddleware';
 import { UserRegistrationValidationMiddleware } from '../controllers/UserController/UserRegistrationValidationMiddleware';
 import { JoinGroupValidationMiddleware } from '../controllers/GroupController/JoinGroupValidationMiddleware';
+import { SendMessageValidationMiddleware } from '../controllers/MessageController/SendMessageValidationMiddleware';
 import { AuthenticationMiddleware } from '../middlerware/AuthenticationMiddleware';
 import { ErrorMiddleware } from '../middlerware/ErrorMiddleware';
+import { MessageController } from '../controllers/MessageController/MessageController';
 
 /**
  * Initialise Inversify with Interface instances. This will initialise all the services.
@@ -36,6 +40,7 @@ export function initialiseRepositories(container: Container): Container {
   // Datastore
   container.bind<IUserRepository>(INVERSIFY_TYPES.UserRepository).to(UserRepository);
   container.bind<IGroupRepository>(INVERSIFY_TYPES.GroupRepository).to(GroupRepository);
+  container.bind<IMessageRepository>(INVERSIFY_TYPES.MessageRepository).to(MessageRepository);
   return container;
 }
 
@@ -52,6 +57,8 @@ export function initialiseServer(inversifyContainer: Container): Container {
   inversifyContainer.bind<IRouterController>(INVERSIFY_TYPES.Controller).to(UserController);
   // User Controller
   inversifyContainer.bind<IRouterController>(INVERSIFY_TYPES.Controller).to(GroupController);
+  // Message Controller
+  inversifyContainer.bind<IRouterController>(INVERSIFY_TYPES.Controller).to(MessageController);
   // Server
   inversifyContainer.bind<Server>(INVERSIFY_TYPES.Server).to(Server).inSingletonScope();
   // Logger middleware
@@ -66,6 +73,9 @@ export function initialiseServer(inversifyContainer: Container): Container {
   inversifyContainer
     .bind<JoinGroupValidationMiddleware>(INVERSIFY_TYPES.JoinGroupValidationMiddleware)
     .to(JoinGroupValidationMiddleware);
+  inversifyContainer
+    .bind<SendMessageValidationMiddleware>(INVERSIFY_TYPES.SendMessageValidationMiddleware)
+    .to(SendMessageValidationMiddleware);
 
   // Authentication Middleware
   inversifyContainer

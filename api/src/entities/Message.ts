@@ -1,18 +1,18 @@
 import * as Mongoose from 'mongoose';
 
-enum MessageType {
+export enum MessageType {
   TEXT,
   IMAGE,
 }
 
 export interface IMessage extends Mongoose.Document {
-  _id: string
-  groupId: Mongoose.Schema.Types.ObjectId
-  message: string
-  type: MessageType
-  senderId: Mongoose.Schema.Types.ObjectId
-  createdAt: Date
-  updatedAt: Date
+  _id: string;
+  groupId: Mongoose.Schema.Types.ObjectId;
+  message: string;
+  type: MessageType;
+  senderId: Mongoose.Schema.Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const messageSchema: Mongoose.Schema = new Mongoose.Schema(
@@ -45,8 +45,4 @@ const messageSchema: Mongoose.Schema = new Mongoose.Schema(
   },
 );
 
-export const Message = Mongoose.model<IMessage>(
-  'Message',
-  messageSchema,
-  'message',
-);
+export const Message = Mongoose.model<IMessage>('Message', messageSchema, 'message');
