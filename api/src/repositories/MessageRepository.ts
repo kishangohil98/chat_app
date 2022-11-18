@@ -25,7 +25,7 @@ export class MessageRepository implements IMessageRepository {
     }
     return Message.create({
       groupId: group.id,
-      message: body.text,
+      message: body.textMessage,
       type: MessageType.TEXT,
       senderId: user.id,
     });

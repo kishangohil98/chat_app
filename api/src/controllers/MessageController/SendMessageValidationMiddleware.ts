@@ -5,12 +5,12 @@ import { INVERSIFY_TYPES } from '../../inversify/inversifyTypes';
 import { ValidationMiddleware } from '../../middlerware/ValidationMiddleware';
 
 export const SendMessageSchema = Joi.object().keys({
-  text: Joi.string().required(),
+  textMessage: Joi.string().required(),
   groupId: Joi.string().required(),
 });
 
 export interface ISendMessageSchema {
-  text: string;
+  textMessage: string;
   groupId: string;
 }
 
