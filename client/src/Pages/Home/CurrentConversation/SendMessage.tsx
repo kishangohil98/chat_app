@@ -1,26 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Box, TextField, IconButton } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { useFormik } from 'formik';
 import axiosInstance from '../../../Axios';
+import { Message } from '../../../Models/Message';
+import { useAppSelector } from '../../../Store/hooks';
 
 export const SendMessage = () => {
-  const { handleSubmit, handleChange, values, touched, errors, handleBlur } = useFormik<{
-    textMessage: string;
-    groupId: string;
-  }>({
-    initialValues: {
-      textMessage: '',
-      groupId: '',
-    },
-    onSubmit: async (valuesOnSubmit) => {
-      try {
-        console.log(valuesOnSubmit);
-      } catch (error) {
-        console.error('Error', error);
-      }
-    },
-  });
+  const currentGroup = useAppSelector((state) => state.currentConversation.currentGroup);
+  const { handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue } =
+    useFormik<{
+      textMessage: string;
+      groupId: string;
+    }>({
+      initialValues: {
+        textMessage: '',
+        groupId: '',
+      },
+      onSubmit: async (valuesOnSubmit) => {
+        try {
+          const { data } = await axiosInstance.post<Message>('message', valuesOnSubmit);
+          console.log(data);
+        } catch (error) {
+          console.error('Error', error);
+        }
+      },
+    });
+
+  useEffect(() => {
+    if (currentGroup?._id) {
+      setFieldValue('groupId', currentGroup?._id);
+    }
+  }, [currentGroup?._id]);
+
   return (
     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
       <Grid container flexDirection="row" sx={{ p: 1 }}>

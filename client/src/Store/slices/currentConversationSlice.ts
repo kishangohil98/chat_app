@@ -1,16 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Loading } from '../common';
 import { User } from '../../Models/User';
 import { fetchCurrentConversationUser } from '../services/currentConversation';
+import { getUserFromDmGroup, Group } from '../../Models/Group';
 
 export type CurrentConversationState = {
   user: User | null;
+  currentGroup: Group | null;
   loading: Loading;
   error: any;
 };
 
 const initialState: CurrentConversationState = {
   user: null,
+  currentGroup: null,
   loading: Loading.Idle,
   error: undefined,
 };
@@ -18,7 +21,11 @@ const initialState: CurrentConversationState = {
 export const currentConversationSlice = createSlice({
   name: 'currentConversation',
   initialState,
-  reducers: {},
+  reducers: {
+    changeCurrentGroup: (state, action: PayloadAction<Group>) => {
+      state.currentGroup = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchCurrentConversationUser.pending, (state) => ({
       ...state,
@@ -41,5 +48,7 @@ export const currentConversationSlice = createSlice({
 });
 
 const currentConversationReducer = currentConversationSlice.reducer;
+
+export const { changeCurrentGroup } = currentConversationSlice.actions;
 
 export default currentConversationReducer;

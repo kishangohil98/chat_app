@@ -17,7 +17,7 @@ import { useAppDispath, useAppSelector } from '../../Store/hooks';
 import { getGroup } from '../../Store/slices/groupsSlice';
 import { fetchGroups } from '../../Store/services/groups';
 import { getUser } from '../../Store/slices/userSlice';
-import { fetchCurrentConversationUser } from '../../Store/services/currentConversation';
+import { changeCurrentGroup } from '../../Store/slices/currentConversationSlice';
 
 function ListComponent() {
   const dispatch = useAppDispath();
@@ -47,10 +47,7 @@ function ListComponent() {
             return (
               <div key={data._id}>
                 <Divider variant="fullWidth" component="li" />
-                <ListItem
-                  disablePadding
-                  onClick={() => dispatch(fetchCurrentConversationUser(chatUser._id))}
-                >
+                <ListItem disablePadding onClick={() => dispatch(changeCurrentGroup(data))}>
                   <ListItemButton alignItems="flex-start">
                     <ListItemAvatar>
                       <Avatar alt="Remy Sharp" src="" />

@@ -16,3 +16,8 @@ export interface Group {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export const getUserFromDmGroup = (group: Group, authUser: User): User => {
+  const chatUser = group.users.filter((user) => user._id !== authUser._id)[0];
+  return chatUser;
+};

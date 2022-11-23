@@ -7,6 +7,7 @@ import { ValidationMiddleware } from '../../middlerware/ValidationMiddleware';
 export const SendMessageSchema = Joi.object().keys({
   textMessage: Joi.string().required(),
   groupId: Joi.string().required(),
+  _user: Joi.object().optional(), // Authentication
 });
 
 export interface ISendMessageSchema {

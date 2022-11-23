@@ -1,8 +1,8 @@
 import * as Mongoose from 'mongoose';
 
 export enum MessageType {
-  TEXT,
-  IMAGE,
+  TEXT = 'TEXT',
+  IMAGE = 'IMAGE',
 }
 
 export interface IMessage extends Mongoose.Document {

@@ -1,18 +1,26 @@
 import { Avatar, Divider, Grid, Typography, Box } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Loading } from '../../../Store/common';
 import { useAppDispath, useAppSelector } from '../../../Store/hooks';
 import { TopBar } from './TopBar';
 import { SendMessage } from './SendMessage';
+import { GroupType } from '../../../Models/Group';
+import { getUser } from '../../../Store/slices/userSlice';
 
 export const Index = () => {
   const dispatch = useAppDispath();
   const currentConversation = useAppSelector((state) => state.currentConversation);
 
-  if (currentConversation.loading === Loading.Pending) {
-    return <>loading</>;
-  }
-  if (currentConversation.loading === Loading.Idle) {
+  useEffect(() => {
+    if (!currentConversation.currentGroup) {
+      return;
+    }
+    if (currentConversation.currentGroup.type === GroupType.DM) {
+      // fetch
+    }
+  }, [currentConversation.currentGroup]);
+
+  if (!currentConversation.currentGroup) {
     return <>Select current convresation</>;
   }
 
