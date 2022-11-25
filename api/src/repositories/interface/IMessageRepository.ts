@@ -4,4 +4,6 @@ import { IMessage } from '../../entities/Message';
 
 export interface IMessageRepository {
   sendMessage(user: IUser, body: ISendMessageSchema): Promise<IMessage>;
+
+  getGroupMessages(user: IUser, groupId: string): Promise<IMessage[]>;
 }

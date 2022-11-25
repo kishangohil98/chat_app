@@ -1,14 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Loading } from '../common';
 import { User } from '../../Models/User';
-import { fetchCurrentConversationUser } from '../services/currentConversation';
-import { getUserFromDmGroup, Group } from '../../Models/Group';
+import { fetchCurrentConversationMessages } from '../services/currentConversation';
+import { Group } from '../../Models/Group';
+import { Message } from '../../Models/Message';
 
 export type CurrentConversationState = {
   user: User | null;
   currentGroup: Group | null;
   loading: Loading;
   error: any;
+  messages: Message[];
+  messagesLoading: Loading;
 };
 
 const initialState: CurrentConversationState = {
@@ -16,6 +19,8 @@ const initialState: CurrentConversationState = {
   currentGroup: null,
   loading: Loading.Idle,
   error: undefined,
+  messages: [],
+  messagesLoading: Loading.Idle,
 };
 
 export const currentConversationSlice = createSlice({
@@ -27,22 +32,19 @@ export const currentConversationSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchCurrentConversationUser.pending, (state) => ({
+    builder.addCase(fetchCurrentConversationMessages.pending, (state) => ({
       ...state,
-      user: null,
-      loading: Loading.Pending,
-      error: undefined,
+      messagesLoading: Loading.Pending,
+      messages: [],
     }));
-    builder.addCase(fetchCurrentConversationUser.fulfilled, (state, action) => ({
+    builder.addCase(fetchCurrentConversationMessages.fulfilled, (state, action) => ({
       ...state,
-      user: action.payload,
-      loading: Loading.Succeeded,
+      messagesLoading: Loading.Idle,
+      messages: action.payload,
     }));
-    builder.addCase(fetchCurrentConversationUser.rejected, (state, action) => ({
+    builder.addCase(fetchCurrentConversationMessages.rejected, (state, action) => ({
       ...state,
-      user: null,
-      error: action.payload,
-      loading: Loading.Failed,
+      messagesLoading: Loading.Failed,
     }));
   },
 });

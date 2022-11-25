@@ -31,6 +31,11 @@ export class MessageController implements IRouterController {
       this.sendMessageValidationMiddleware.handler(),
       this.sendMessage,
     );
+    this.router.get(
+      `${this.path}/:groupId`,
+      this.authenticationMiddleware.handler(),
+      this.getGroupMessages,
+    );
   }
 
   private sendMessage = async (
@@ -42,6 +47,23 @@ export class MessageController implements IRouterController {
       const user = this.authenticationMiddleware.getUserPrinciple(request);
 
       const message = await this.messageRepository.sendMessage(user, request.body);
+
+      response.status(200).json(message);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  };
+
+  private getGroupMessages = async (
+    request: express.Request,
+    response: express.Response,
+    next: express.NextFunction,
+  ) => {
+    try {
+      const user = this.authenticationMiddleware.getUserPrinciple(request);
+
+      const message = await this.messageRepository.getGroupMessages(user, request.params.groupId);
 
       response.status(200).json(message);
     } catch (error) {

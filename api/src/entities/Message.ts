@@ -7,10 +7,10 @@ export enum MessageType {
 
 export interface IMessage extends Mongoose.Document {
   _id: string;
-  groupId: Mongoose.Schema.Types.ObjectId;
+  groupId: Mongoose.Types.ObjectId;
   message: string;
   type: MessageType;
-  senderId: Mongoose.Schema.Types.ObjectId;
+  senderId: Mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -8,24 +8,24 @@ import { useAppSelector } from '../../../Store/hooks';
 
 export const SendMessage = () => {
   const currentGroup = useAppSelector((state) => state.currentConversation.currentGroup);
-  const { handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue } =
-    useFormik<{
-      textMessage: string;
-      groupId: string;
-    }>({
-      initialValues: {
-        textMessage: '',
-        groupId: '',
-      },
-      onSubmit: async (valuesOnSubmit) => {
-        try {
-          const { data } = await axiosInstance.post<Message>('message', valuesOnSubmit);
-          console.log(data);
-        } catch (error) {
-          console.error('Error', error);
-        }
-      },
-    });
+  const { handleSubmit, handleChange, values, handleBlur, setFieldValue } = useFormik<{
+    textMessage: string;
+    groupId: string;
+  }>({
+    initialValues: {
+      textMessage: '',
+      groupId: '',
+    },
+    onSubmit: async (valuesOnSubmit) => {
+      try {
+        const { data } = await axiosInstance.post<Message>('message', valuesOnSubmit);
+        setFieldValue('textMessage', '');
+        console.log(data);
+      } catch (error) {
+        console.error('Error', error);
+      }
+    },
+  });
 
   useEffect(() => {
     if (currentGroup?._id) {
