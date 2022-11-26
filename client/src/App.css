@@ -1,0 +1,30 @@
+    .chat .messages-chat .message {
+      display:flex;
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 8px;
+    }
+
+    .chat .messages-chat .message .message-container {
+        background-color: #f6f6f6;
+        border-radius: 12px;
+        padding: 15px;
+      }
+      .chat .messages-chat .message .response-container{
+        background-color: #e3effd;
+        border-radius: 12px;
+        padding: 15px;
+        float: right;
+        margin-right: 100px;
+        margin-left:auto;
+    }
+    
+    .chat .messages-chat .text {
+  }
+    
+  .time {
+    font-size: 10px;
+    color:lightgrey;
+    float: right;
+  }
+  

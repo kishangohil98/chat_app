@@ -18,11 +18,12 @@ export const SendMessage = () => {
     },
     onSubmit: async (valuesOnSubmit) => {
       try {
-        const { data } = await axiosInstance.post<Message>('message', valuesOnSubmit);
         setFieldValue('textMessage', '');
+        const { data } = await axiosInstance.post<Message>('message', valuesOnSubmit);
         console.log(data);
       } catch (error) {
         console.error('Error', error);
+        setFieldValue('textMessage', valuesOnSubmit.textMessage);
       }
     },
   });
