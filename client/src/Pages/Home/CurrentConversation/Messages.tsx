@@ -6,21 +6,40 @@ import { Loading } from '../../../Store/common';
 import { useAppSelector } from '../../../Store/hooks';
 
 const MyMessage = ({ message }: { message: Message }) => (
-  <div className="message">
-    <div className="message-container">
-      <p className="text">{message.message}</p>
-      <p className="response-time time"> c</p>
-    </div>
-  </div>
+  <Box sx={{ ml: 5 }} className="message">
+    <Box
+      sx={{
+        borderRadius: '6px',
+        padding: '6px',
+        backgroundColor: 'secondary.light',
+        float: 'right',
+        marginRight: 0,
+        marginLeft: 'auto',
+      }}
+    >
+      <Typography variant="body2">{message.message}</Typography>
+    </Box>
+  </Box>
 );
 
 const ResponseMessage = ({ message }: { message: Message }) => (
-  <div className="message">
-    <div className="response-container">
-      <p className="text">{message.message}</p>
-      <p className="time"> time</p>
-    </div>
-  </div>
+  <Box
+    sx={{
+      mr: 5,
+    }}
+    className="message"
+  >
+    <Box
+      sx={{
+        borderRadius: '6px',
+        padding: '6px',
+        backgroundColor: 'primary.dark',
+        color: 'primary.contrastText',
+      }}
+    >
+      <Typography variant="body2">{message.message}</Typography>
+    </Box>
+  </Box>
 );
 
 export const Messages = () => {
@@ -40,24 +59,23 @@ export const Messages = () => {
   return (
     <Box
       sx={{
-        my: 0,
+        mx: 0.8,
         p: 0,
-        height: '100%',
+        height: '400px',
+        // height: '100%',
+        overflowY: 'scroll',
       }}
+      className="chat-messages"
     >
-      <div className="chat">
-        <div className="messages-chat">
-          {messages.map((message) => (
-            <div>
-              {message.senderId === userData?._id ? (
-                <MyMessage message={message} />
-              ) : (
-                <ResponseMessage message={message} />
-              )}
-            </div>
-          ))}
+      {messages.map((message) => (
+        <div>
+          {message.senderId === userData?._id ? (
+            <MyMessage message={message} />
+          ) : (
+            <ResponseMessage message={message} />
+          )}
         </div>
-      </div>
+      ))}
     </Box>
   );
 };

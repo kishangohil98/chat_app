@@ -42,6 +42,7 @@ export const SendMessage = () => {
             id="textMessage"
             type="text"
             fullWidth
+            autoComplete="false"
             size="small"
             value={values.textMessage}
             onChange={handleChange}

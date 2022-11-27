@@ -9,7 +9,7 @@ export const darkTheme: ThemeOptions = {
       dark: '#000051',
     },
     secondary: {
-      light: '#a4a4a4',
+      light: '#DADCE5',
       main: '#757575',
       dark: '#494949',
       contrastText: '#ffffff',

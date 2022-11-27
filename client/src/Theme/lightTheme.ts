@@ -9,7 +9,7 @@ export const lightTheme: ThemeOptions = {
       dark: '#00227b',
     },
     secondary: {
-      light: '#a4a4a4',
+      light: '#DADCE5',
       main: '#757575',
       dark: '#494949',
       contrastText: '#ffffff',
